@@ -50,7 +50,6 @@ namespace withAuthentication.Models
                     .HasColumnName("avgStarRating");
 
                 entity.Property(e => e.DeveloperName)
-                    .IsRequired()
                     .HasMaxLength(50)
                     .IsUnicode(false)
                     .HasColumnName("developerName");
@@ -81,7 +80,7 @@ namespace withAuthentication.Models
             modelBuilder.Entity<DeveloperReview>(entity =>
             {
                 entity.HasKey(e => e.ReviewId)
-                    .HasName("PK__Develope__2ECD6E2437022F5B");
+                    .HasName("PK__Develope__2ECD6E24818EAE91");
 
                 entity.ToTable("DeveloperReview");
 
@@ -122,13 +121,11 @@ namespace withAuthentication.Models
                     .HasColumnName("email");
 
                 entity.Property(e => e.FirstName)
-                    .IsRequired()
                     .HasMaxLength(15)
                     .IsUnicode(false)
                     .HasColumnName("firstName");
 
                 entity.Property(e => e.LastName)
-                    .IsRequired()
                     .HasMaxLength(15)
                     .IsUnicode(false)
                     .HasColumnName("lastName");
@@ -204,7 +201,6 @@ namespace withAuthentication.Models
                     .HasColumnName("bioText");
 
                 entity.Property(e => e.CompanyName)
-                    .IsRequired()
                     .HasMaxLength(25)
                     .IsUnicode(false)
                     .HasColumnName("companyName");
@@ -221,7 +217,6 @@ namespace withAuthentication.Models
                     .HasColumnName("facebook");
 
                 entity.Property(e => e.FirstName)
-                    .IsRequired()
                     .HasMaxLength(15)
                     .IsUnicode(false)
                     .HasColumnName("firstName");
@@ -237,7 +232,6 @@ namespace withAuthentication.Models
                     .HasColumnName("languages");
 
                 entity.Property(e => e.LastName)
-                    .IsRequired()
                     .HasMaxLength(15)
                     .IsUnicode(false)
                     .HasColumnName("lastName");
@@ -277,7 +271,7 @@ namespace withAuthentication.Models
             modelBuilder.Entity<RealtorReview>(entity =>
             {
                 entity.HasKey(e => e.ReviewId)
-                    .HasName("PK__RealtorR__2ECD6E242A9243B3");
+                    .HasName("PK__RealtorR__2ECD6E24FA5FC0FB");
 
                 entity.ToTable("RealtorReview");
 

@@ -10,7 +10,7 @@ using withAuthentication.Models;
 namespace withAuthentication.Migrations
 {
     [DbContext(typeof(PThreeDbContext))]
-    [Migration("20220423043216_initialCreate")]
+    [Migration("20220426193948_initialCreate")]
     partial class initialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -231,7 +231,6 @@ namespace withAuthentication.Migrations
                         .HasColumnName("avgStarRating");
 
                     b.Property<string>("DeveloperName")
-                        .IsRequired()
                         .HasMaxLength(50)
                         .IsUnicode(false)
                         .HasColumnType("varchar(50)")
@@ -295,7 +294,7 @@ namespace withAuthentication.Migrations
                         .HasColumnName("starRating");
 
                     b.HasKey("ReviewId")
-                        .HasName("PK__Develope__2ECD6E2437022F5B");
+                        .HasName("PK__Develope__2ECD6E24818EAE91");
 
                     b.HasIndex("DeveloperId");
 
@@ -320,14 +319,12 @@ namespace withAuthentication.Migrations
                         .HasColumnName("email");
 
                     b.Property<string>("FirstName")
-                        .IsRequired()
                         .HasMaxLength(15)
                         .IsUnicode(false)
                         .HasColumnType("varchar(15)")
                         .HasColumnName("firstName");
 
                     b.Property<string>("LastName")
-                        .IsRequired()
                         .HasMaxLength(15)
                         .IsUnicode(false)
                         .HasColumnType("varchar(15)")
@@ -423,7 +420,6 @@ namespace withAuthentication.Migrations
                         .HasColumnName("bioText");
 
                     b.Property<string>("CompanyName")
-                        .IsRequired()
                         .HasMaxLength(25)
                         .IsUnicode(false)
                         .HasColumnType("varchar(25)")
@@ -443,7 +439,6 @@ namespace withAuthentication.Migrations
                         .HasColumnName("facebook");
 
                     b.Property<string>("FirstName")
-                        .IsRequired()
                         .HasMaxLength(15)
                         .IsUnicode(false)
                         .HasColumnType("varchar(15)")
@@ -462,7 +457,6 @@ namespace withAuthentication.Migrations
                         .HasColumnName("languages");
 
                     b.Property<string>("LastName")
-                        .IsRequired()
                         .HasMaxLength(15)
                         .IsUnicode(false)
                         .HasColumnType("varchar(15)")
@@ -537,7 +531,7 @@ namespace withAuthentication.Migrations
                         .HasColumnName("starRating");
 
                     b.HasKey("ReviewId")
-                        .HasName("PK__RealtorR__2ECD6E242A9243B3");
+                        .HasName("PK__RealtorR__2ECD6E24FA5FC0FB");
 
                     b.HasIndex("PotentialBuyerId");
 

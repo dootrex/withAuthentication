@@ -57,14 +57,45 @@ namespace withAuthentication.Controllers
                 var result = await _userManager.CreateAsync(user, registerVM.Password);
 
                 // Please comment out the following 4 lines of code after registering one user. As they are used to create roles.
-                /* _context.Roles.Add(new IdentityRole { Name = "PPOwner", Id = "PPOwner", NormalizedName = "PPOWNER" });
-                 _context.Roles.Add(new IdentityRole { Name = "Developer", Id = "Developer", NormalizedName = "DEVELOPER" });
-                 _context.Roles.Add(new IdentityRole { Name = "Realtor", Id = "Realtor", NormalizedName = "REALTOR" });
-                 _context.SaveChanges();*/
+                /*_context.Roles.Add(new IdentityRole { Name = "PPOwner", Id = "PPOwner", NormalizedName = "PPOWNER" });
+                _context.Roles.Add(new IdentityRole { Name = "Developer", Id = "Developer", NormalizedName = "DEVELOPER" });
+                _context.Roles.Add(new IdentityRole { Name = "Realtor", Id = "Realtor", NormalizedName = "REALTOR" });
+                _context.SaveChanges();*/
 
 
                 if (result.Succeeded)
                 {
+
+                    //add user to their table
+                    if (registerVM.Role == "Realtor")
+                    {
+                        Realtor realtor = new Realtor()
+                        {
+                            Email = registerVM.Email
+                        };
+                        _context.Realtors.Add(realtor);
+                        _context.SaveChanges();
+                    }
+                    if (registerVM.Role == "Developer")
+                    {
+                        Developer developer = new Developer()
+                        {
+                            Email = registerVM.Email
+                        };
+                        _context.Developers.Add(developer);
+                        _context.SaveChanges();
+                    }
+                    if (registerVM.Role == "PPOwner")
+                    {
+                        PotentialBuyer potentialBuyer = new PotentialBuyer()
+                        {
+                            Email = registerVM.Email
+                        };
+                        _context.PotentialBuyers.Add(potentialBuyer);
+                        _context.SaveChanges();
+                    }
+
+
                     await _userManager.AddToRoleAsync(user, registerVM.Role);
                     var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
                     code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
@@ -147,7 +178,7 @@ namespace withAuthentication.Controllers
             var token = new JwtSecurityToken(_config["Jwt:Issuer"],
                 _config["Jwt:Audience"],
                 claims,
-                expires: DateTime.Now.AddMinutes(1),
+                expires: DateTime.Now.AddMinutes(120),
                 signingCredentials: credentials);
 
             return new JwtSecurityTokenHandler().WriteToken(token);
