@@ -20,6 +20,57 @@ namespace withAuthentication.Controllers
         private PThreeDbContext _context;
         public ProfileController(PThreeDbContext context) { _context = context; }
 
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        [HttpGet]
+        public IActionResult GetUserData()
+        {
+            var identity = HttpContext.User.Identity as ClaimsIdentity;
+            string userName = "";
+            string role = "";
+            if (identity != null)
+            {
+                userName = GetUserName(identity);
+                role = GetUserRole(identity);
+            }
+            else
+            {
+                return Unauthorized();
+            }
+
+            if (role == "Realtor")
+            {
+                var realtor = _context.Realtors.Where(r => r.Email == userName).FirstOrDefault();
+                var returnObject = new
+                {
+                    realtor,
+                    role = "Realtor"
+                };
+                return Ok(returnObject);
+            }
+            if (role == "Developer")
+            {
+                var developer = _context.Developers.Where(r => r.Email == userName).FirstOrDefault();
+                var returnObject = new
+                {
+                    developer,
+                    role = "Developer"
+                };
+                return Ok(returnObject);
+            }
+            if (role == "PPOwner")
+            {
+                var ppowner = _context.PotentialBuyers.Where(r => r.Email == userName).FirstOrDefault();
+                var returnObject = new
+                {
+                    ppowner,
+                    role = "PPOwner"
+                };
+                return Ok(returnObject);
+            }
+            return Ok("failed");
+
+        }
+
         [HttpGet]
         [Route("developer")]
         public IActionResult GetDeveloperDetails()
@@ -164,6 +215,11 @@ namespace withAuthentication.Controllers
         private String GetUserName(ClaimsIdentity identity)
         {
             return identity.FindFirst("http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress").Value;
+        }
+
+        private String GetUserRole(ClaimsIdentity identity)
+        {
+            return identity.FindFirst("http://schemas.microsoft.com/ws/2008/06/identity/claims/role").Value;
         }
     }
 }
