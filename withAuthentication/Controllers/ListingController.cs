@@ -54,7 +54,7 @@ namespace withAuthentication.Controllers
             }
             var developer = _context.Developers.Where(d => d.Email == userName).FirstOrDefault();
             var project = _context.Projects.Where(p => p.ProjectId == id).FirstOrDefault();
-            if (project.DeveloperId != developer.DeveloperId)
+            if (project.DeveloperId != developer.DeveloperId) // Throw in try catch block for non existent project Id's. For delete request, needs to return an empty object.
             {
                 return Unauthorized();
             }
@@ -97,8 +97,9 @@ namespace withAuthentication.Controllers
         }
 
         [HttpPut]
-        public IActionResult UpdateListing(ProjectVM pVM)
+        public IActionResult UpdateListing([FromBody] ProjectVM pVM)
         {
+        
             var identity = HttpContext.User.Identity as ClaimsIdentity;
             string userName = "";
             if (identity != null)
@@ -111,7 +112,6 @@ namespace withAuthentication.Controllers
             {
                 return Unauthorized();
             }
-
             if (project != null)
             {
                 project.StreetName = pVM.StreetName;

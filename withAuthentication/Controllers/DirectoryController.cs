@@ -59,8 +59,9 @@ namespace withAuthentication.Controllers
         [Route("developers/name/{query}")]
         public IActionResult getDeveloperByName(string query)
         {
-            Developer developer = _context.Developers.Where(dev => dev.DeveloperName.Contains(query)).FirstOrDefault();
-            return Ok(developer);
+            //Developer developer = _context.Developers.Where(dev => dev.DeveloperName.Contains(query)).FirstOrDefault();
+            //return Ok(developer);
+            return Ok(_context.Developers.Where(d => d.DeveloperName.Contains(query)));
         }
 
 
@@ -68,8 +69,9 @@ namespace withAuthentication.Controllers
         [Route("realtors/name/{query}")]
         public IActionResult getRealtorByName(string query)
         {
-            Realtor realtor = _context.Realtors.Where(r => r.FirstName.Contains(query) || r.LastName.Contains(query)).FirstOrDefault();
-            return Ok(realtor);
+            //Realtor realtor = _context.Realtors.Where(r => r.FirstName.Contains(query) || r.LastName.Contains(query)).FirstOrDefault();
+            //return Ok(realtor);
+            return Ok(_context.Realtors.Where(r => r.FirstName.Contains(query) || r.LastName.Contains(query)));
         }
 
         private String GetUserName(ClaimsIdentity identity)
