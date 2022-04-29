@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text.Json.Serialization;
 
 #nullable disable
 
@@ -22,6 +23,7 @@ namespace withAuthentication.Models
         public decimal? AvgStarRating { get; set; }
 
         public virtual ICollection<DeveloperReview> DeveloperReviews { get; set; }
+        [JsonIgnore]
         public virtual ICollection<Project> Projects { get; set; }
     }
 }

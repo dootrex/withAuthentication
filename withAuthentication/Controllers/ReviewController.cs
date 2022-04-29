@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -11,6 +11,7 @@ using withAuthentication.Models;
 
 namespace withAuthentication.Controllers
 {
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     [Route("api/[controller]")]
     [ApiController]
     public class ReviewController : ControllerBase
@@ -18,16 +19,19 @@ namespace withAuthentication.Controllers
         private PThreeDbContext _context;
         public ReviewController(PThreeDbContext context) { _context = context; }
 
-        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+
         [HttpGet]
         [Route("developer/{id}")]
         public IActionResult GetReviewByDeveloperId(int id)
         {
             var developerReview = _context.DeveloperReviews.Where(r => r.DeveloperId == id);
-            return Ok(developerReview);
+            if (developerReview == null)
+            {
+                return NotFound();
+            }
+            return new ObjectResult(developerReview);
         }
 
-        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Realtor")]
         [HttpGet]
         [Route("realtor/{id}")]
         public IActionResult GetReviewByRealtorId(int id)
@@ -39,7 +43,6 @@ namespace withAuthentication.Controllers
             }
             return new ObjectResult(realtorReview);
         }
-
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "PPOwner")]
         [HttpPost]
         [Route("developer/{id}")]
@@ -49,7 +52,7 @@ namespace withAuthentication.Controllers
             string userName = "";
             if (identity != null)
             {
-                userName = identity.FindFirst("http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress").Value;
+                userName = GetUserName(identity);
             }
             var userId = _context.PotentialBuyers.Where(d => d.Email == userName).FirstOrDefault();
             var review = new DeveloperReview()
@@ -60,32 +63,73 @@ namespace withAuthentication.Controllers
                 StarRating = developerReview.StarRating,
             };
             _context.DeveloperReviews.Add(review);
+            _context.SaveChanges();
 
             Developer developer = _context.Developers.Where(d => d.DeveloperId == id).FirstOrDefault();
-            //Count number of reviews and then get avg
-
-
-
             if (developer.AvgStarRating != null)
             {
-                developer.AvgStarRating = (developerReview.StarRating + developer.AvgStarRating / 2);
+                developer.AvgStarRating = (decimal?)_context.DeveloperReviews.Where(r => r.DeveloperId == id).Average(r => r.StarRating);
             }
             else
             {
                 developer.AvgStarRating = developerReview.StarRating;
             }
-
             _context.SaveChanges();
-
 
             return Ok();
         }
-
-
-        [HttpDelete("{id}")]
-        public IActionResult MyDelete(int id)
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "PPOwner")]
+        [HttpPost]
+        [Route("realtor/{id}")]
+        public IActionResult AddReviewByRealtorID(int id, [FromBody] RealtorReview realtorReview)
         {
+            var identity = HttpContext.User.Identity as ClaimsIdentity;
+            string userName = "";
+            if (identity != null)
+            {
+                userName = GetUserName(identity);
+            }
+            var userId = _context.PotentialBuyers.Where(d => d.Email == userName).FirstOrDefault();
+            var review = new RealtorReview()
+            {
+                RealtorId = id,
+                PotentialBuyerId = userId.PotentialBuyerId,
+                Comment = realtorReview.Comment,
+                StarRating = realtorReview.StarRating,
+            };
+            _context.RealtorReviews.Add(review);
+            _context.SaveChanges();
+
+            // Update Average Star Rating
+            Realtor realtor = _context.Realtors.Where(r => r.RealtorId == id).FirstOrDefault();
+            if (realtor.AvgStarRating != null)
+            {
+                realtor.AvgStarRating = (decimal?)_context.RealtorReviews.Where(r => r.RealtorId == id).Average(r => r.StarRating);
+            }
+            else
+            {
+                realtor.AvgStarRating = realtorReview.StarRating;
+            }
+            _context.SaveChanges();
+
+            return Ok();
+        }
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "PPOwner")]
+        [HttpDelete("developer/{id}")]
+        public IActionResult RemoveDeveloperReviewByID(int id)
+        {
+            var identity = HttpContext.User.Identity as ClaimsIdentity;
+            string userName = "";
+            if (identity != null)
+            {
+                userName = GetUserName(identity);
+            }
+            var ppOwner = _context.PotentialBuyers.Where(pp => pp.Email == userName).FirstOrDefault();
             var developerReview = _context.DeveloperReviews.Where(d => d.ReviewId == id).FirstOrDefault();
+            if (ppOwner.PotentialBuyerId != developerReview.PotentialBuyerId)
+            {
+                return Unauthorized();
+            }
             if (developerReview == null)
             {
                 return NotFound();
@@ -94,13 +138,62 @@ namespace withAuthentication.Controllers
             {
                 _context.DeveloperReviews.Remove(developerReview);
                 _context.SaveChanges();
+
+                // Update Average Star Rating
+                Developer developer = _context.Developers.Where(r => r.DeveloperId == developerReview.DeveloperId).FirstOrDefault();
+                developer.AvgStarRating = (decimal?)_context.DeveloperReviews.Where(r => r.DeveloperId == developerReview.DeveloperId).Average(r => r.StarRating);
+                _context.SaveChanges();
+
                 return new ObjectResult(developerReview);
             }
             catch
             {
                 return Conflict();
             }
+        }
 
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "PPOwner")]
+        [HttpDelete("realtor/{id}")]
+        public IActionResult RemoveRealtorReviewByID(int id)
+        {
+
+            var identity = HttpContext.User.Identity as ClaimsIdentity;
+            string userName = "";
+            if (identity != null)
+            {
+                userName = GetUserName(identity);
+            }
+            var ppOwner = _context.PotentialBuyers.Where(pp => pp.Email == userName).FirstOrDefault();
+            var realtorReview = _context.RealtorReviews.Where(d => d.ReviewId == id).FirstOrDefault();
+            if (ppOwner.PotentialBuyerId != realtorReview.PotentialBuyerId)
+            {
+                return Unauthorized();
+            }
+
+            if (realtorReview == null)
+            {
+                return NotFound();
+            }
+            try
+            {
+                _context.RealtorReviews.Remove(realtorReview);
+                _context.SaveChanges();
+
+                // Update Average Star Rating
+                Realtor realtor = _context.Realtors.Where(r => r.RealtorId == realtorReview.RealtorId).FirstOrDefault();
+                realtor.AvgStarRating = (decimal?)_context.RealtorReviews.Where(r => r.RealtorId == realtorReview.RealtorId).Average(r => r.StarRating);
+                _context.SaveChanges();
+
+                return new ObjectResult(realtorReview);
+            }
+            catch
+            {
+                return Conflict();
+            }
+        }
+        private String GetUserName(ClaimsIdentity identity)
+        {
+            return identity.FindFirst("http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress").Value;
         }
     }
 }

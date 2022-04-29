@@ -1,22 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text.Json.Serialization;
+using System.Linq;
+using System.Threading.Tasks;
 
-#nullable disable
-
-namespace withAuthentication.Models
+namespace withAuthentication.ViewModels
 {
-    public partial class Project
+    public class ProjectVM
     {
         public int ProjectId { get; set; }
-        public int? DeveloperId { get; set; }
         public string StreetNum { get; set; }
         public string StreetName { get; set; }
         public string City { get; set; }
         public string PostalCode { get; set; }
         public string ProjectStatus { get; set; }
         public string ProjectImage { get; set; }
-        [JsonIgnore]
-        public virtual Developer Developer { get; set; }
+
     }
 }
