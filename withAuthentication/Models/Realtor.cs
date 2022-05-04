@@ -9,6 +9,7 @@ namespace withAuthentication.Models
     {
         public Realtor()
         {
+            RealtorLanguages = new HashSet<RealtorLanguage>();
             RealtorReviews = new HashSet<RealtorReview>();
         }
 
@@ -21,14 +22,15 @@ namespace withAuthentication.Models
         public string ProfilePic { get; set; }
         public string BioText { get; set; }
         public decimal? AvgStarRating { get; set; }
-        public string Languages { get; set; }
         public string Website { get; set; }
         public string LinkedIn { get; set; }
         public string Twitter { get; set; }
         public string Youtube { get; set; }
         public string Facebook { get; set; }
         public string Instagram { get; set; }
+        public DateTime? SubscriptionExpiration { get; set; }
 
+        public virtual ICollection<RealtorLanguage> RealtorLanguages { get; set; }
         public virtual ICollection<RealtorReview> RealtorReviews { get; set; }
     }
 }

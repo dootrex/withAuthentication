@@ -57,11 +57,26 @@ namespace withAuthentication.Migrations
                     email = table.Column<string>(type: "varchar(50)", unicode: false, maxLength: 50, nullable: false),
                     website = table.Column<string>(type: "varchar(100)", unicode: false, maxLength: 100, nullable: true),
                     logo = table.Column<string>(type: "varchar(100)", unicode: false, maxLength: 100, nullable: true),
-                    avgStarRating = table.Column<decimal>(type: "decimal(2,1)", nullable: true)
+                    avgStarRating = table.Column<decimal>(type: "decimal(2,1)", nullable: true),
+                    subscription_expiration = table.Column<DateTime>(type: "date", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Developer", x => x.developerID);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Language",
+                columns: table => new
+                {
+                    languageID = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    languageCode = table.Column<string>(type: "varchar(3)", unicode: false, maxLength: 3, nullable: true),
+                    languageName = table.Column<string>(type: "varchar(50)", unicode: false, maxLength: 50, nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Language", x => x.languageID);
                 });
 
             migrationBuilder.CreateTable(
@@ -73,7 +88,8 @@ namespace withAuthentication.Migrations
                     firstName = table.Column<string>(type: "varchar(15)", unicode: false, maxLength: 15, nullable: true),
                     lastName = table.Column<string>(type: "varchar(15)", unicode: false, maxLength: 15, nullable: true),
                     phoneNumber = table.Column<string>(type: "char(10)", unicode: false, fixedLength: true, maxLength: 10, nullable: true),
-                    email = table.Column<string>(type: "varchar(25)", unicode: false, maxLength: 25, nullable: false)
+                    email = table.Column<string>(type: "varchar(25)", unicode: false, maxLength: 25, nullable: false),
+                    profilePic = table.Column<string>(type: "varchar(100)", unicode: false, maxLength: 100, nullable: true)
                 },
                 constraints: table =>
                 {
@@ -94,13 +110,13 @@ namespace withAuthentication.Migrations
                     profilePic = table.Column<string>(type: "varchar(100)", unicode: false, maxLength: 100, nullable: true),
                     bioText = table.Column<string>(type: "varchar(255)", unicode: false, maxLength: 255, nullable: true),
                     avgStarRating = table.Column<decimal>(type: "decimal(2,1)", nullable: true),
-                    languages = table.Column<string>(type: "varchar(100)", unicode: false, maxLength: 100, nullable: true),
                     website = table.Column<string>(type: "varchar(100)", unicode: false, maxLength: 100, nullable: true),
                     linkedIn = table.Column<string>(type: "varchar(100)", unicode: false, maxLength: 100, nullable: true),
                     twitter = table.Column<string>(type: "varchar(100)", unicode: false, maxLength: 100, nullable: true),
                     youtube = table.Column<string>(type: "varchar(100)", unicode: false, maxLength: 100, nullable: true),
                     facebook = table.Column<string>(type: "varchar(100)", unicode: false, maxLength: 100, nullable: true),
-                    instagram = table.Column<string>(type: "varchar(100)", unicode: false, maxLength: 100, nullable: true)
+                    instagram = table.Column<string>(type: "varchar(100)", unicode: false, maxLength: 100, nullable: true),
+                    subscription_expiration = table.Column<DateTime>(type: "date", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -222,10 +238,15 @@ namespace withAuthentication.Migrations
                     developerID = table.Column<int>(type: "int", nullable: true),
                     streetNum = table.Column<string>(type: "varchar(10)", unicode: false, maxLength: 10, nullable: true),
                     streetName = table.Column<string>(type: "varchar(25)", unicode: false, maxLength: 25, nullable: true),
-                    city = table.Column<string>(type: "varchar(15)", unicode: false, maxLength: 15, nullable: false),
-                    postalCode = table.Column<string>(type: "char(6)", unicode: false, fixedLength: true, maxLength: 6, nullable: false),
-                    projectStatus = table.Column<string>(type: "varchar(30)", unicode: false, maxLength: 30, nullable: false),
-                    projectImage = table.Column<string>(type: "varchar(250)", unicode: false, maxLength: 250, nullable: true)
+                    city = table.Column<string>(type: "varchar(15)", unicode: false, maxLength: 15, nullable: true),
+                    postalCode = table.Column<string>(type: "char(6)", unicode: false, fixedLength: true, maxLength: 6, nullable: true),
+                    projectStatus = table.Column<string>(type: "varchar(30)", unicode: false, maxLength: 30, nullable: true),
+                    projectImage = table.Column<string>(type: "varchar(250)", unicode: false, maxLength: 250, nullable: true),
+                    projectName = table.Column<string>(type: "varchar(500)", unicode: false, maxLength: 500, nullable: false),
+                    projectLink = table.Column<string>(type: "varchar(2500)", unicode: false, maxLength: 2500, nullable: true),
+                    projectDescription = table.Column<string>(type: "varchar(5000)", unicode: false, maxLength: 5000, nullable: true),
+                    created = table.Column<DateTime>(type: "datetime", nullable: true),
+                    expectedCompletion = table.Column<DateTime>(type: "date", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -251,7 +272,7 @@ namespace withAuthentication.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK__Develope__2ECD6E24818EAE91", x => x.reviewID);
+                    table.PrimaryKey("PK__Develope__2ECD6E24A94252F7", x => x.reviewID);
                     table.ForeignKey(
                         name: "FK_potentialBuyerID",
                         column: x => x.potentialBuyerID,
@@ -263,6 +284,32 @@ namespace withAuthentication.Migrations
                         column: x => x.developerID,
                         principalTable: "Developer",
                         principalColumn: "developerID",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "RealtorLanguage",
+                columns: table => new
+                {
+                    realtorLanguageID = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    realtorID = table.Column<int>(type: "int", nullable: true),
+                    languageID = table.Column<int>(type: "int", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_RealtorLanguage", x => x.realtorLanguageID);
+                    table.ForeignKey(
+                        name: "FK_LanguageID",
+                        column: x => x.languageID,
+                        principalTable: "Language",
+                        principalColumn: "languageID",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_lRealtorID",
+                        column: x => x.realtorID,
+                        principalTable: "Realtor",
+                        principalColumn: "realtorID",
                         onDelete: ReferentialAction.Restrict);
                 });
 
@@ -279,7 +326,7 @@ namespace withAuthentication.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK__RealtorR__2ECD6E24FA5FC0FB", x => x.reviewID);
+                    table.PrimaryKey("PK__RealtorR__2ECD6E24CAD4E171", x => x.reviewID);
                     table.ForeignKey(
                         name: "FK_realtorID",
                         column: x => x.realtorID,
@@ -349,6 +396,16 @@ namespace withAuthentication.Migrations
                 column: "developerID");
 
             migrationBuilder.CreateIndex(
+                name: "IX_RealtorLanguage_languageID",
+                table: "RealtorLanguage",
+                column: "languageID");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_RealtorLanguage_realtorID",
+                table: "RealtorLanguage",
+                column: "realtorID");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_RealtorReview_potentialBuyerID",
                 table: "RealtorReview",
                 column: "potentialBuyerID");
@@ -383,6 +440,9 @@ namespace withAuthentication.Migrations
                 name: "Project");
 
             migrationBuilder.DropTable(
+                name: "RealtorLanguage");
+
+            migrationBuilder.DropTable(
                 name: "RealtorReview");
 
             migrationBuilder.DropTable(
@@ -393,6 +453,9 @@ namespace withAuthentication.Migrations
 
             migrationBuilder.DropTable(
                 name: "Developer");
+
+            migrationBuilder.DropTable(
+                name: "Language");
 
             migrationBuilder.DropTable(
                 name: "Realtor");

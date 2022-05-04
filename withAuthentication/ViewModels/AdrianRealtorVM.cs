@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using withAuthentication.Models;
 
 namespace withAuthentication.ViewModels
 {
@@ -20,6 +21,7 @@ namespace withAuthentication.ViewModels
         public string Youtube { get; set; }
         public string Facebook { get; set; }
         public string Instagram { get; set; }
+        public int[] languageKeys { get; set; }
 
     }
 }

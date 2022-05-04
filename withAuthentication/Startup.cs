@@ -47,8 +47,12 @@ namespace withAuthentication
                 options.Password.RequiredLength = 5;
             }).AddEntityFrameworkStores<PThreeDbContext>().AddDefaultTokenProviders();
 
-            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-                 .AddJwtBearer(options =>
+            services.AddAuthentication(options =>
+            {
+                // this will allow to use default Authorize
+                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme; //added
+                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme; //added
+            }).AddJwtBearer(options =>
                  {
                      options.TokenValidationParameters = new
                    TokenValidationParameters

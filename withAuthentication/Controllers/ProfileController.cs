@@ -20,7 +20,7 @@ namespace withAuthentication.Controllers
         private PThreeDbContext _context;
         public ProfileController(PThreeDbContext context) { _context = context; }
 
-        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        [Authorize]
         [HttpGet]
         public IActionResult GetUserData()
         {
@@ -39,7 +39,7 @@ namespace withAuthentication.Controllers
 
             if (role == "Realtor")
             {
-                var realtor = _context.Realtors.Where(r => r.Email == userName).FirstOrDefault();
+                Realtor realtor = _context.Realtors.Where(r => r.Email == userName).FirstOrDefault();
                 var returnObject = new
                 {
                     realtor,
@@ -85,7 +85,7 @@ namespace withAuthentication.Controllers
             return Ok(developer);
         }
 
-        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Developer")]
+        [Authorize(Roles = "Developer")]
         [HttpPut]
         [Route("developer")]
         public IActionResult UpdateDeveloperDetails([FromBody] AdrianDeveloperVM developer)
@@ -113,7 +113,7 @@ namespace withAuthentication.Controllers
             return new ObjectResult(developer);
         }
 
-        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Realtor")]
+        [Authorize(Roles = "Realtor")]
         [HttpGet]
         [Route("realtor")]
         public IActionResult GetRealtorDetails()
@@ -124,12 +124,17 @@ namespace withAuthentication.Controllers
             {
                 userName = GetUserName(identity);
             }
+            Realtor realtor = _context.Realtors.Where(r => r.Email == userName).FirstOrDefault();
+            //dont delete the next line even if I am not returning it
+            List<RealtorLanguage> languages = _context.RealtorLanguages.Where(rl => rl.RealtorId == realtor.RealtorId).ToList();
+            var returnObject = new
+            {
+                realtor
+            };
 
-
-            var realtor = _context.Realtors.Where(r => r.Email == userName);
-            return Ok(realtor);
+            return Ok(returnObject);
         }
-        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Realtor")]
+        [Authorize(Roles = "Realtor")]
         [HttpPut]
         [Route("realtor")]
         public IActionResult UpdateRealtorDetails([FromBody] AdrianRealtorVM realtor)
@@ -140,7 +145,7 @@ namespace withAuthentication.Controllers
             {
                 userName = GetUserName(identity);
             }
-            var item = _context.Realtors.Where(r => r.Email == userName).FirstOrDefault();
+            Realtor item = _context.Realtors.Where(r => r.Email == userName).FirstOrDefault();
 
             if (item == null)
             {
@@ -148,26 +153,45 @@ namespace withAuthentication.Controllers
             }
             else if (ModelState.IsValid)
             {
+                //get the languages 
+                List<Language> languages = new List<Language>();
+                foreach (var key in realtor.languageKeys)
+                {
+                    Language language = _context.Languages.Where(l => l.LanguageId == key).FirstOrDefault();
+                    var check = _context.RealtorLanguages.Where(rl => rl.LanguageId == language.LanguageId && rl.RealtorId == item.RealtorId).FirstOrDefault();
+                    if (check == null)
+                    {
+                        RealtorLanguage rl = new RealtorLanguage()
+                        {
+                            Language = language,
+                            Realtor = item
+                        };
+                        _context.RealtorLanguages.Add(rl);
+                    }
+
+                }
+
+
                 item.FirstName = realtor.FirstName;
                 item.LastName = realtor.LastName;
                 item.CompanyName = realtor.CompanyName;
                 item.PhoneNumber = realtor.PhoneNumber;
                 item.ProfilePic = realtor.ProfilePic;
                 item.BioText = realtor.BioText;
-                item.Languages = realtor.Languages;
                 item.Website = realtor.Website;
                 item.LinkedIn = realtor.LinkedIn;
                 item.Twitter = realtor.Twitter;
                 item.Youtube = realtor.Youtube;
                 item.Facebook = realtor.Facebook;
                 item.Instagram = realtor.Instagram;
+
                 _context.SaveChanges();
             }
             return new ObjectResult(realtor);
         }
 
 
-        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "PPOwner")]
+        [Authorize(Roles = "PPOwner")]
         [HttpGet]
         [Route("ppowner")]
         public IActionResult GetPPBuyerDetails()
@@ -183,7 +207,7 @@ namespace withAuthentication.Controllers
         }
 
 
-        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "PPOwner")]
+        [Authorize(Roles = "PPOwner")]
         [HttpPut]
         [Route("ppowner")]
         public IActionResult UpdatePPBuyerDetails([FromBody] AdrianPotentialBuyerVM potentialBuyer)
@@ -210,6 +234,7 @@ namespace withAuthentication.Controllers
             }
             return new ObjectResult(potentialBuyer);
         }
+
 
 
         private String GetUserName(ClaimsIdentity identity)

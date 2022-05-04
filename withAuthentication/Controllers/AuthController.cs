@@ -9,6 +9,7 @@ using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
+using System.IO;
 using System.Linq;
 using System.Security.Claims;
 using System.Text;
@@ -30,6 +31,7 @@ namespace withAuthentication.Controllers
         private readonly UserManager<IdentityUser> _userManager;
         private readonly RoleManager<IdentityRole> _roleManager; // handling user roles during the registration
         private PThreeDbContext _context;
+
 
         //constructor with injection
         public AuthController(IConfiguration config,
@@ -57,12 +59,44 @@ namespace withAuthentication.Controllers
                 var result = await _userManager.CreateAsync(user, registerVM.Password);
 
                 // Please comment out the following 4 lines of code after registering one user. As they are used to create roles.
-                /*_context.Roles.Add(new IdentityRole { Name = "PPOwner", Id = "PPOwner", NormalizedName = "PPOWNER" });
-                _context.Roles.Add(new IdentityRole { Name = "Developer", Id = "Developer", NormalizedName = "DEVELOPER" });
-                _context.Roles.Add(new IdentityRole { Name = "Realtor", Id = "Realtor", NormalizedName = "REALTOR" });
-                _context.SaveChanges();*/
+                /* _context.Roles.Add(new IdentityRole { Name = "PPOwner", Id = "PPOwner", NormalizedName = "PPOWNER" });
+                 _context.Roles.Add(new IdentityRole { Name = "Developer", Id = "Developer", NormalizedName = "DEVELOPER" });
+                 _context.Roles.Add(new IdentityRole { Name = "Realtor", Id = "Realtor", NormalizedName = "REALTOR" });
+                 _context.SaveChanges();
 
-
+                 string[] langs = new string[]{
+                                         "Mandarin Chinese",
+                                         "Spanish",
+                                         "English",
+                                         "Hindi/Urdu",
+                                         "Arabic",
+                                         "Bengali",
+                                         "Portuguese",
+                                         "Russian",
+                                         "Japanese",
+                                         "German",
+                                         "Javanese",
+                                         "Punjabi",
+                                         "Wu",
+                                         "French",
+                                         "Telugu",
+                                         "Vietnamese",
+                                         "Marathi",
+                                         "Korean",
+                                         "Tamil",
+                                         "Italian",
+                                         "Turkish",
+                                         "Cantonese/Yue"
+                                        };
+                 foreach (var lang in langs)
+                 {
+                     Language language = new Language()
+                     {
+                         LanguageName = lang
+                     };
+                     _context.Languages.Add(language);
+                     _context.SaveChanges();
+                 }*/
                 if (result.Succeeded)
                 {
 
@@ -117,7 +151,9 @@ namespace withAuthentication.Controllers
         {
             if (ModelState.IsValid)
             {
+
                 var result = await _signInManager.PasswordSignInAsync(loginVM.Email.ToUpper(), loginVM.Password, false, lockoutOnFailure: true);
+                Response.Cookies.Delete(".AspNetCore.Identity.Application");
                 if (result.Succeeded)
                 {
                     //try the following code by using the above dependancy injection

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text.Json.Serialization;
 
 #nullable disable
 
@@ -16,7 +15,12 @@ namespace withAuthentication.Models
         public string PostalCode { get; set; }
         public string ProjectStatus { get; set; }
         public string ProjectImage { get; set; }
-        [JsonIgnore]
+        public string ProjectName { get; set; }
+        public string ProjectLink { get; set; }
+        public string ProjectDescription { get; set; }
+        public DateTime? Created { get; set; }
+        public DateTime? ExpectedCompletion { get; set; }
+
         public virtual Developer Developer { get; set; }
     }
 }

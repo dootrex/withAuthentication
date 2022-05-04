@@ -18,6 +18,7 @@ namespace withAuthentication.Models
         public string LastName { get; set; }
         public string PhoneNumber { get; set; }
         public string Email { get; set; }
+        public string ProfilePic { get; set; }
 
         public virtual ICollection<DeveloperReview> DeveloperReviews { get; set; }
         public virtual ICollection<RealtorReview> RealtorReviews { get; set; }

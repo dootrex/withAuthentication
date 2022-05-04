@@ -10,7 +10,7 @@ using withAuthentication.Models;
 
 namespace withAuthentication.Controllers
 {
-    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class DirectoryController : ControllerBase
@@ -42,9 +42,7 @@ namespace withAuthentication.Controllers
         {
             Developer developer = _context.Developers.Where(d => d.DeveloperId == id).FirstOrDefault();
             return Ok(developer);
-        }
-
-
+        }/**/
 
         [HttpGet]
         [Route("realtors/{id}")]
@@ -59,8 +57,6 @@ namespace withAuthentication.Controllers
         [Route("developers/name/{query}")]
         public IActionResult getDeveloperByName(string query)
         {
-            //Developer developer = _context.Developers.Where(dev => dev.DeveloperName.Contains(query)).FirstOrDefault();
-            //return Ok(developer);
             return Ok(_context.Developers.Where(d => d.DeveloperName.Contains(query)));
         }
 

@@ -10,7 +10,7 @@ using withAuthentication.Models;
 namespace withAuthentication.Migrations
 {
     [DbContext(typeof(PThreeDbContext))]
-    [Migration("20220426193948_initialCreate")]
+    [Migration("20220504074541_initialCreate")]
     partial class initialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -256,6 +256,10 @@ namespace withAuthentication.Migrations
                         .HasColumnName("phoneNumber")
                         .IsFixedLength(true);
 
+                    b.Property<DateTime?>("SubscriptionExpiration")
+                        .HasColumnType("date")
+                        .HasColumnName("subscription_expiration");
+
                     b.Property<string>("Website")
                         .HasMaxLength(100)
                         .IsUnicode(false)
@@ -294,13 +298,39 @@ namespace withAuthentication.Migrations
                         .HasColumnName("starRating");
 
                     b.HasKey("ReviewId")
-                        .HasName("PK__Develope__2ECD6E24818EAE91");
+                        .HasName("PK__Develope__2ECD6E24A94252F7");
 
                     b.HasIndex("DeveloperId");
 
                     b.HasIndex("PotentialBuyerId");
 
                     b.ToTable("DeveloperReview");
+                });
+
+            modelBuilder.Entity("withAuthentication.Models.Language", b =>
+                {
+                    b.Property<int>("LanguageId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasColumnName("languageID")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("LanguageCode")
+                        .HasMaxLength(3)
+                        .IsUnicode(false)
+                        .HasColumnType("varchar(3)")
+                        .HasColumnName("languageCode");
+
+                    b.Property<string>("LanguageName")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .IsUnicode(false)
+                        .HasColumnType("varchar(50)")
+                        .HasColumnName("languageName");
+
+                    b.HasKey("LanguageId");
+
+                    b.ToTable("Language");
                 });
 
             modelBuilder.Entity("withAuthentication.Models.PotentialBuyer", b =>
@@ -337,6 +367,12 @@ namespace withAuthentication.Migrations
                         .HasColumnName("phoneNumber")
                         .IsFixedLength(true);
 
+                    b.Property<string>("ProfilePic")
+                        .HasMaxLength(100)
+                        .IsUnicode(false)
+                        .HasColumnType("varchar(100)")
+                        .HasColumnName("profilePic");
+
                     b.HasKey("PotentialBuyerId");
 
                     b.ToTable("PotentialBuyer");
@@ -351,23 +387,35 @@ namespace withAuthentication.Migrations
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("City")
-                        .IsRequired()
                         .HasMaxLength(15)
                         .IsUnicode(false)
                         .HasColumnType("varchar(15)")
                         .HasColumnName("city");
 
+                    b.Property<DateTime?>("Created")
+                        .HasColumnType("datetime")
+                        .HasColumnName("created");
+
                     b.Property<int?>("DeveloperId")
                         .HasColumnType("int")
                         .HasColumnName("developerID");
 
+                    b.Property<DateTime?>("ExpectedCompletion")
+                        .HasColumnType("date")
+                        .HasColumnName("expectedCompletion");
+
                     b.Property<string>("PostalCode")
-                        .IsRequired()
                         .HasMaxLength(6)
                         .IsUnicode(false)
                         .HasColumnType("char(6)")
                         .HasColumnName("postalCode")
                         .IsFixedLength(true);
+
+                    b.Property<string>("ProjectDescription")
+                        .HasMaxLength(5000)
+                        .IsUnicode(false)
+                        .HasColumnType("varchar(5000)")
+                        .HasColumnName("projectDescription");
 
                     b.Property<string>("ProjectImage")
                         .HasMaxLength(250)
@@ -375,8 +423,20 @@ namespace withAuthentication.Migrations
                         .HasColumnType("varchar(250)")
                         .HasColumnName("projectImage");
 
-                    b.Property<string>("ProjectStatus")
+                    b.Property<string>("ProjectLink")
+                        .HasMaxLength(2500)
+                        .IsUnicode(false)
+                        .HasColumnType("varchar(2500)")
+                        .HasColumnName("projectLink");
+
+                    b.Property<string>("ProjectName")
                         .IsRequired()
+                        .HasMaxLength(500)
+                        .IsUnicode(false)
+                        .HasColumnType("varchar(500)")
+                        .HasColumnName("projectName");
+
+                    b.Property<string>("ProjectStatus")
                         .HasMaxLength(30)
                         .IsUnicode(false)
                         .HasColumnType("varchar(30)")
@@ -450,12 +510,6 @@ namespace withAuthentication.Migrations
                         .HasColumnType("varchar(100)")
                         .HasColumnName("instagram");
 
-                    b.Property<string>("Languages")
-                        .HasMaxLength(100)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(100)")
-                        .HasColumnName("languages");
-
                     b.Property<string>("LastName")
                         .HasMaxLength(15)
                         .IsUnicode(false)
@@ -481,6 +535,10 @@ namespace withAuthentication.Migrations
                         .HasColumnType("varchar(100)")
                         .HasColumnName("profilePic");
 
+                    b.Property<DateTime?>("SubscriptionExpiration")
+                        .HasColumnType("date")
+                        .HasColumnName("subscription_expiration");
+
                     b.Property<string>("Twitter")
                         .HasMaxLength(100)
                         .IsUnicode(false)
@@ -502,6 +560,31 @@ namespace withAuthentication.Migrations
                     b.HasKey("RealtorId");
 
                     b.ToTable("Realtor");
+                });
+
+            modelBuilder.Entity("withAuthentication.Models.RealtorLanguage", b =>
+                {
+                    b.Property<int>("RealtorLanguageId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasColumnName("realtorLanguageID")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int?>("LanguageId")
+                        .HasColumnType("int")
+                        .HasColumnName("languageID");
+
+                    b.Property<int?>("RealtorId")
+                        .HasColumnType("int")
+                        .HasColumnName("realtorID");
+
+                    b.HasKey("RealtorLanguageId");
+
+                    b.HasIndex("LanguageId");
+
+                    b.HasIndex("RealtorId");
+
+                    b.ToTable("RealtorLanguage");
                 });
 
             modelBuilder.Entity("withAuthentication.Models.RealtorReview", b =>
@@ -531,7 +614,7 @@ namespace withAuthentication.Migrations
                         .HasColumnName("starRating");
 
                     b.HasKey("ReviewId")
-                        .HasName("PK__RealtorR__2ECD6E24FA5FC0FB");
+                        .HasName("PK__RealtorR__2ECD6E24CAD4E171");
 
                     b.HasIndex("PotentialBuyerId");
 
@@ -618,6 +701,23 @@ namespace withAuthentication.Migrations
                     b.Navigation("Developer");
                 });
 
+            modelBuilder.Entity("withAuthentication.Models.RealtorLanguage", b =>
+                {
+                    b.HasOne("withAuthentication.Models.Language", "Language")
+                        .WithMany("RealtorLanguages")
+                        .HasForeignKey("LanguageId")
+                        .HasConstraintName("FK_LanguageID");
+
+                    b.HasOne("withAuthentication.Models.Realtor", "Realtor")
+                        .WithMany("RealtorLanguages")
+                        .HasForeignKey("RealtorId")
+                        .HasConstraintName("FK_lRealtorID");
+
+                    b.Navigation("Language");
+
+                    b.Navigation("Realtor");
+                });
+
             modelBuilder.Entity("withAuthentication.Models.RealtorReview", b =>
                 {
                     b.HasOne("withAuthentication.Models.PotentialBuyer", "PotentialBuyer")
@@ -642,6 +742,11 @@ namespace withAuthentication.Migrations
                     b.Navigation("Projects");
                 });
 
+            modelBuilder.Entity("withAuthentication.Models.Language", b =>
+                {
+                    b.Navigation("RealtorLanguages");
+                });
+
             modelBuilder.Entity("withAuthentication.Models.PotentialBuyer", b =>
                 {
                     b.Navigation("DeveloperReviews");
@@ -651,6 +756,8 @@ namespace withAuthentication.Migrations
 
             modelBuilder.Entity("withAuthentication.Models.Realtor", b =>
                 {
+                    b.Navigation("RealtorLanguages");
+
                     b.Navigation("RealtorReviews");
                 });
 #pragma warning restore 612, 618
