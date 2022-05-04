@@ -129,7 +129,8 @@ namespace withAuthentication.Controllers
             List<RealtorLanguage> languages = _context.RealtorLanguages.Where(rl => rl.RealtorId == realtor.RealtorId).ToList();
             var returnObject = new
             {
-                realtor
+                realtor,
+                languages
             };
 
             return Ok(returnObject);

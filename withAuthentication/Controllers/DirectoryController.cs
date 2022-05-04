@@ -10,7 +10,7 @@ using withAuthentication.Models;
 
 namespace withAuthentication.Controllers
 {
-    [Authorize]
+    //[Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class DirectoryController : ControllerBase
@@ -68,6 +68,20 @@ namespace withAuthentication.Controllers
             //Realtor realtor = _context.Realtors.Where(r => r.FirstName.Contains(query) || r.LastName.Contains(query)).FirstOrDefault();
             //return Ok(realtor);
             return Ok(_context.Realtors.Where(r => r.FirstName.Contains(query) || r.LastName.Contains(query)));
+        }
+        [HttpGet]
+        [Route("realtors/lang/{langID}")]
+        public IActionResult getRealtorsByLanguage(long langID)
+        {
+            List<RealtorLanguage> realtorLanguages = _context.RealtorLanguages.Where(rl => rl.LanguageId == langID).ToList();
+            List<Realtor> realtors = new List<Realtor>();
+            foreach (var item in realtorLanguages)
+            {
+                Realtor realtor = _context.Realtors.Where(r => r.RealtorId == item.RealtorId).FirstOrDefault();
+                List<RealtorLanguage> languages = _context.RealtorLanguages.Where(rl => rl.RealtorId == realtor.RealtorId).ToList();
+                realtors.Add(realtor);
+            }
+            return Ok(realtors);
         }
 
         private String GetUserName(ClaimsIdentity identity)
