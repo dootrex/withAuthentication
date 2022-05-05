@@ -22,9 +22,9 @@ namespace withAuthentication.Controllers
 
         [HttpGet]
         [Route("developer/{id}")]
-        public IActionResult GetReviewByDeveloperId(int id)
+        public IActionResult GetReviewsByDeveloperId(int id)
         {
-            var developerReview = _context.DeveloperReviews.Where(r => r.DeveloperId == id);
+            var developerReview = _context.DeveloperReviews.Where(r => r.DeveloperId == id).Select(r => new { review = r, potentialBuyer = r.PotentialBuyer });
             if (developerReview == null)
             {
                 return NotFound();
@@ -34,16 +34,17 @@ namespace withAuthentication.Controllers
 
         [HttpGet]
         [Route("realtor/{id}")]
-        public IActionResult GetReviewByRealtorId(int id)
+        public IActionResult GetReviewsByRealtorId(int id)
         {
-            var realtorReview = _context.RealtorReviews.Where(r => r.RealtorId == id);
+            var realtorReview = _context.RealtorReviews.Where(r => r.RealtorId == id).Select(r => new { review = r, potentialBuyer = r.PotentialBuyer });
+
             if (realtorReview == null)
             {
                 return NotFound();
             }
             return new ObjectResult(realtorReview);
         }
-        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "PPOwner")]
+        [Authorize(Roles = "PPOwner")]
         [HttpPost]
         [Route("developer/{id}")]
         public IActionResult AddReviewByDeveloperID(int id, [FromBody] DeveloperReview developerReview)

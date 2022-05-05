@@ -18,14 +18,53 @@ namespace withAuthentication.Controllers
         [HttpGet]
         public IActionResult getAllListings()
         {
-            return Ok(_context.Projects);
+            var listings = from d in _context.Developers
+                           from p in d.Projects
+                           select new Project
+                           {
+                               ProjectId = p.ProjectId,
+                               DeveloperId = d.DeveloperId,
+                               StreetNum = p.StreetNum,
+                               StreetName = p.StreetName,
+                               City = p.City,
+                               PostalCode = p.PostalCode,
+                               ProjectStatus = p.ProjectStatus,
+                               ProjectImage = p.ProjectImage,
+                               Developer = p.Developer,
+                               ProjectName = p.ProjectName,
+                               ProjectLink = p.ProjectLink,
+                               ProjectDescription = p.ProjectDescription,
+                               Created = p.Created,
+                               ExpectedCompletion = p.ExpectedCompletion
+                           };
+            return Ok(listings);
         }
 
         [HttpGet]
         [Route("{id}")]
         public IActionResult getByID(long id)
         {
-            return Ok(_context.Projects.Where(p => p.ProjectId == id).FirstOrDefault());
+            var project = from d in _context.Developers
+                          from p in d.Projects
+                          .Where(p => p.ProjectId == id)
+                          select new Project
+                          {
+                              ProjectId = p.ProjectId,
+                              DeveloperId = d.DeveloperId,
+                              StreetNum = p.StreetNum,
+                              StreetName = p.StreetName,
+                              City = p.City,
+                              PostalCode = p.PostalCode,
+                              ProjectStatus = p.ProjectStatus,
+                              ProjectImage = p.ProjectImage,
+                              Developer = p.Developer,
+                              ProjectName = p.ProjectName,
+                              ProjectLink = p.ProjectLink,
+                              ProjectDescription = p.ProjectDescription,
+                              Created = p.Created,
+                              ExpectedCompletion = p.ExpectedCompletion,
+                          };
+            return Ok(project);
         }
 
         [HttpGet]

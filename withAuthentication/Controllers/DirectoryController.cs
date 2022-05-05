@@ -49,6 +49,7 @@ namespace withAuthentication.Controllers
         public IActionResult getRealtorById(long id)
         {
             Realtor realtor = _context.Realtors.Where(d => d.RealtorId == id).FirstOrDefault();
+            List<RealtorLanguage> languages = _context.RealtorLanguages.Where(rl => rl.RealtorId == realtor.RealtorId).ToList();
             return Ok(realtor);
         }
 
@@ -67,7 +68,8 @@ namespace withAuthentication.Controllers
         {
             //Realtor realtor = _context.Realtors.Where(r => r.FirstName.Contains(query) || r.LastName.Contains(query)).FirstOrDefault();
             //return Ok(realtor);
-            return Ok(_context.Realtors.Where(r => r.FirstName.Contains(query) || r.LastName.Contains(query)));
+            return Ok(_context.Realtors.Where(r =>
+                (r.FirstName + r.LastName).Contains(query)));
         }
         [HttpGet]
         [Route("realtors/lang/{langID}")]

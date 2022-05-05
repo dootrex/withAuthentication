@@ -87,7 +87,8 @@ namespace withAuthentication.Controllers
                     City = project.City,
                     PostalCode = project.PostalCode,
                     ProjectStatus = project.ProjectStatus,
-                    ProjectImage = project.ProjectImage
+                    ProjectImage = project.ProjectImage,
+                    ProjectName = project.ProjectName
                 };
                 _context.Projects.Add(pr);
                 _context.SaveChanges();

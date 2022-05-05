@@ -13,6 +13,7 @@ using withAuthentication.ViewModels;
 
 namespace withAuthentication.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class ProfileController : ControllerBase
@@ -42,7 +43,7 @@ namespace withAuthentication.Controllers
                 Realtor realtor = _context.Realtors.Where(r => r.Email == userName).FirstOrDefault();
                 var returnObject = new
                 {
-                    realtor,
+                    userDetails = realtor,
                     role = "Realtor"
                 };
                 return Ok(returnObject);
@@ -52,7 +53,7 @@ namespace withAuthentication.Controllers
                 var developer = _context.Developers.Where(r => r.Email == userName).FirstOrDefault();
                 var returnObject = new
                 {
-                    developer,
+                    userDetails = developer,
                     role = "Developer"
                 };
                 return Ok(returnObject);
@@ -62,7 +63,7 @@ namespace withAuthentication.Controllers
                 var ppowner = _context.PotentialBuyers.Where(r => r.Email == userName).FirstOrDefault();
                 var returnObject = new
                 {
-                    ppowner,
+                    userDetails = ppowner,
                     role = "PPOwner"
                 };
                 return Ok(returnObject);
@@ -249,4 +250,6 @@ namespace withAuthentication.Controllers
         }
     }
 }
+
+
 
