@@ -22,8 +22,9 @@ namespace withAuthentication.Models
         public string Logo { get; set; }
         public decimal? AvgStarRating { get; set; }
         public DateTime? SubscriptionExpiration { get; set; }
-
+        [JsonIgnore]
         public virtual ICollection<DeveloperReview> DeveloperReviews { get; set; }
+        [JsonIgnore]
         public virtual ICollection<Project> Projects { get; set; }
     }
 }

@@ -18,25 +18,14 @@ namespace withAuthentication.Controllers
         [HttpGet]
         public IActionResult getAllListings()
         {
-            var listings = from d in _context.Developers
-                           from p in d.Projects
-                           select new Project
-                           {
-                               ProjectId = p.ProjectId,
-                               DeveloperId = d.DeveloperId,
-                               StreetNum = p.StreetNum,
-                               StreetName = p.StreetName,
-                               City = p.City,
-                               PostalCode = p.PostalCode,
-                               ProjectStatus = p.ProjectStatus,
-                               ProjectImage = p.ProjectImage,
-                               Developer = p.Developer,
-                               ProjectName = p.ProjectName,
-                               ProjectLink = p.ProjectLink,
-                               ProjectDescription = p.ProjectDescription,
-                               Created = p.Created,
-                               ExpectedCompletion = p.ExpectedCompletion
-                           };
+            var listings = (from d in _context.Developers
+                            from p in d.Projects
+                            where d.DeveloperId == p.DeveloperId
+                            select new
+                            {
+                                Project = p,
+                                Developer = d
+                            }).ToList();
             return Ok(listings);
         }
 
@@ -46,23 +35,12 @@ namespace withAuthentication.Controllers
         {
             var project = from d in _context.Developers
                           from p in d.Projects
-                          .Where(p => p.ProjectId == id)
-                          select new Project
+                          where p.ProjectId == id
+                          where d.DeveloperId == p.DeveloperId
+                          select new
                           {
-                              ProjectId = p.ProjectId,
-                              DeveloperId = d.DeveloperId,
-                              StreetNum = p.StreetNum,
-                              StreetName = p.StreetName,
-                              City = p.City,
-                              PostalCode = p.PostalCode,
-                              ProjectStatus = p.ProjectStatus,
-                              ProjectImage = p.ProjectImage,
-                              Developer = p.Developer,
-                              ProjectName = p.ProjectName,
-                              ProjectLink = p.ProjectLink,
-                              ProjectDescription = p.ProjectDescription,
-                              Created = p.Created,
-                              ExpectedCompletion = p.ExpectedCompletion,
+                              Project = p,
+                              Developer = d
                           };
             return Ok(project);
         }

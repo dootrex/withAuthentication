@@ -21,7 +21,7 @@ namespace withAuthentication.Models
         public string ProjectDescription { get; set; }
         public DateTime? Created { get; set; }
         public DateTime? ExpectedCompletion { get; set; }
-
+        [JsonIgnore]
         public virtual Developer Developer { get; set; }
     }
 }
