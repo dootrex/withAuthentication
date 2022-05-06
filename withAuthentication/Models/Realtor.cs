@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text.Json.Serialization;
 
 #nullable disable
 
@@ -29,8 +30,9 @@ namespace withAuthentication.Models
         public string Facebook { get; set; }
         public string Instagram { get; set; }
         public DateTime? SubscriptionExpiration { get; set; }
-
+        [JsonIgnore]
         public virtual ICollection<RealtorLanguage> RealtorLanguages { get; set; }
+        [JsonIgnore]
         public virtual ICollection<RealtorReview> RealtorReviews { get; set; }
     }
 }

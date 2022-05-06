@@ -22,8 +22,8 @@ namespace withAuthentication.Controllers
         [Route("realtors")]
         public IActionResult getAllReators()
         {
-            var realtors = _context.Realtors;
-            return Ok(realtors);
+
+            return Ok(_context.Realtors.Select(r => new { firstName = r.FirstName, lastName = r.LastName, realtorID = r.RealtorId, profilePic = r.ProfilePic }));
         }
 
 
@@ -31,8 +31,7 @@ namespace withAuthentication.Controllers
         [Route("developers")]
         public IActionResult getAllDevelopers()
         {
-            var devlopers = _context.Developers;
-            return Ok(devlopers);
+            return Ok(_context.Developers.Select(d => new { developerID = d.DeveloperId, developerName = d.DeveloperName, logo = d.Logo }));
         }
 
 
@@ -40,16 +39,16 @@ namespace withAuthentication.Controllers
         [Route("developers/{id}")]
         public IActionResult getDeveloperById(long id)
         {
-            Developer developer = _context.Developers.Where(d => d.DeveloperId == id).FirstOrDefault();
+            var developer = _context.Developers.Select(d => new { developer = d, reviews = d.DeveloperReviews.Select(dr => new { reviewID = dr.ReviewId, starRating = dr.StarRating, comment = dr.Comment, potentialBuyer = dr.PotentialBuyer }).ToList() }).FirstOrDefault();
             return Ok(developer);
-        }/**/
+        }
 
         [HttpGet]
         [Route("realtors/{id}")]
         public IActionResult getRealtorById(long id)
         {
-            Realtor realtor = _context.Realtors.Where(d => d.RealtorId == id).FirstOrDefault();
-            List<RealtorLanguage> languages = _context.RealtorLanguages.Where(rl => rl.RealtorId == realtor.RealtorId).ToList();
+            var realtor = _context.Realtors.Select(r => new { realtor = r, languages = r.RealtorLanguages.Select(rl => new { languageId = rl.LanguageId, languageName = rl.Language.LanguageName }).ToList(), reviews = r.RealtorReviews.Select(rr => new { reviewID = rr.ReviewId, starRating = rr.StarRating, comment = rr.Comment, potentialBuyer = rr.PotentialBuyer }).ToList() }).FirstOrDefault(); ;
+
             return Ok(realtor);
         }
 
@@ -58,7 +57,7 @@ namespace withAuthentication.Controllers
         [Route("developers/name/{query}")]
         public IActionResult getDeveloperByName(string query)
         {
-            return Ok(_context.Developers.Where(d => d.DeveloperName.Contains(query)));
+            return Ok(_context.Developers.Where(d => d.DeveloperName.Contains(query)).Select(d => new { developerID = d.DeveloperId, developerName = d.DeveloperName, logo = d.Logo }));
         }
 
 
@@ -66,29 +65,15 @@ namespace withAuthentication.Controllers
         [Route("realtors/name/{query}")]
         public IActionResult getRealtorByName(string query)
         {
-            //Realtor realtor = _context.Realtors.Where(r => r.FirstName.Contains(query) || r.LastName.Contains(query)).FirstOrDefault();
-            //return Ok(realtor);
-            return Ok(_context.Realtors.Where(r =>
-                (r.FirstName + r.LastName).Contains(query)));
+
+            return Ok(_context.Realtors.Where(r => (r.FirstName + r.LastName).Contains(query)).Select(r => new { firstName = r.FirstName, lastName = r.LastName, realtorID = r.RealtorId, profilePic = r.ProfilePic }));
         }
         [HttpGet]
         [Route("realtors/lang/{langID}")]
         public IActionResult getRealtorsByLanguage(long langID)
         {
-            List<RealtorLanguage> realtorLanguages = _context.RealtorLanguages.Where(rl => rl.LanguageId == langID).ToList();
-            List<Realtor> realtors = new List<Realtor>();
-            foreach (var item in realtorLanguages)
-            {
-                Realtor realtor = _context.Realtors.Where(r => r.RealtorId == item.RealtorId).FirstOrDefault();
-                List<RealtorLanguage> languages = _context.RealtorLanguages.Where(rl => rl.RealtorId == realtor.RealtorId).ToList();
-                realtors.Add(realtor);
-            }
+            var realtors = _context.RealtorLanguages.Where(rl => rl.LanguageId == langID).Select(rl => new { firstName = rl.Realtor.FirstName, lastName = rl.Realtor.LastName, profilePic = rl.Realtor.ProfilePic, realtorID = rl.Realtor.RealtorId });
             return Ok(realtors);
-        }
-
-        private String GetUserName(ClaimsIdentity identity)
-        {
-            return identity.FindFirst("http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress").Value;
         }
     }
 }
