@@ -296,7 +296,7 @@ namespace withAuthentication.Migrations
                         .HasColumnName("starRating");
 
                     b.HasKey("ReviewId")
-                        .HasName("PK__Develope__2ECD6E24A94252F7");
+                        .HasName("PK__Develope__2ECD6E24D9E4EA39");
 
                     b.HasIndex("DeveloperId");
 
@@ -390,7 +390,7 @@ namespace withAuthentication.Migrations
                         .HasColumnType("varchar(15)")
                         .HasColumnName("city");
 
-                    b.Property<DateTime?>("Created")
+                    b.Property<DateTime>("Created")
                         .HasColumnType("datetime")
                         .HasColumnName("created");
 
@@ -612,7 +612,7 @@ namespace withAuthentication.Migrations
                         .HasColumnName("starRating");
 
                     b.HasKey("ReviewId")
-                        .HasName("PK__RealtorR__2ECD6E24CAD4E171");
+                        .HasName("PK__RealtorR__2ECD6E24B012921C");
 
                     b.HasIndex("PotentialBuyerId");
 

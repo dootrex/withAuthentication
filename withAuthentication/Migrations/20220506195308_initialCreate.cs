@@ -245,7 +245,7 @@ namespace withAuthentication.Migrations
                     projectName = table.Column<string>(type: "varchar(500)", unicode: false, maxLength: 500, nullable: false),
                     projectLink = table.Column<string>(type: "varchar(2500)", unicode: false, maxLength: 2500, nullable: true),
                     projectDescription = table.Column<string>(type: "varchar(5000)", unicode: false, maxLength: 5000, nullable: true),
-                    created = table.Column<DateTime>(type: "datetime", nullable: true),
+                    created = table.Column<DateTime>(type: "datetime", nullable: false),
                     expectedCompletion = table.Column<DateTime>(type: "date", nullable: true)
                 },
                 constraints: table =>
@@ -272,7 +272,7 @@ namespace withAuthentication.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK__Develope__2ECD6E24A94252F7", x => x.reviewID);
+                    table.PrimaryKey("PK__Develope__2ECD6E24D9E4EA39", x => x.reviewID);
                     table.ForeignKey(
                         name: "FK_potentialBuyerID",
                         column: x => x.potentialBuyerID,
@@ -326,7 +326,7 @@ namespace withAuthentication.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK__RealtorR__2ECD6E24CAD4E171", x => x.reviewID);
+                    table.PrimaryKey("PK__RealtorR__2ECD6E24B012921C", x => x.reviewID);
                     table.ForeignKey(
                         name: "FK_realtorID",
                         column: x => x.realtorID,

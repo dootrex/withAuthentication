@@ -86,7 +86,7 @@ namespace withAuthentication.Models
             modelBuilder.Entity<DeveloperReview>(entity =>
             {
                 entity.HasKey(e => e.ReviewId)
-                    .HasName("PK__Develope__2ECD6E24A94252F7");
+                    .HasName("PK__Develope__2ECD6E24D9E4EA39");
 
                 entity.ToTable("DeveloperReview");
 
@@ -341,7 +341,7 @@ namespace withAuthentication.Models
             modelBuilder.Entity<RealtorReview>(entity =>
             {
                 entity.HasKey(e => e.ReviewId)
-                    .HasName("PK__RealtorR__2ECD6E24CAD4E171");
+                    .HasName("PK__RealtorR__2ECD6E24B012921C");
 
                 entity.ToTable("RealtorReview");
 

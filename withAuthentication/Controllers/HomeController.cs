@@ -49,7 +49,18 @@ namespace withAuthentication.Controllers
         [Route("developerName/{query}")]
         public IActionResult getByDeveloperName(string query)
         {
-            return Ok(_context.Projects.Where(p => p.Developer.DeveloperName.Contains(query)));
+
+
+            var listings = (from d in _context.Developers
+                            from p in d.Projects
+                            where d.DeveloperId == p.DeveloperId && d.DeveloperName.Contains(query)
+                            select new
+                            {
+                                Project = p,
+                                Developer = d
+                            }).ToList();
+            return Ok(listings);
+
         }
         [HttpGet]
         [Route("city/{query}")]
@@ -62,6 +73,18 @@ namespace withAuthentication.Controllers
         public IActionResult getByProjectStatus(string query)
         {
             return Ok(_context.Projects.Where(p => p.ProjectStatus == query));
+        }
+        [HttpGet]
+        [Route("sort/{date}")]
+        public IActionResult getProjectsByDate(string date)
+
+        {
+            var dt = DateTime.Parse(date);
+
+
+            List<Project> result = _context.Projects.Where(p => DateTime.Compare(dt, p.Created) < 0).ToList();
+            var returnObject = new { result };
+            return Ok(result);
         }
     }
 

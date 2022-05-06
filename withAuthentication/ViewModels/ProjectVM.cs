@@ -14,6 +14,7 @@ namespace withAuthentication.ViewModels
         public string PostalCode { get; set; }
         public string ProjectStatus { get; set; }
         public string ProjectImage { get; set; }
-
+        //only for testing
+        /*    public DateTime Created { get; set; }*/
     }
 }

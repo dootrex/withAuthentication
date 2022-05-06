@@ -39,7 +39,7 @@ namespace withAuthentication.Controllers
         [Route("developers/{id}")]
         public IActionResult getDeveloperById(long id)
         {
-            var developer = _context.Developers.Select(d => new { developer = d, reviews = d.DeveloperReviews.Select(dr => new { reviewID = dr.ReviewId, starRating = dr.StarRating, comment = dr.Comment, potentialBuyer = dr.PotentialBuyer }).ToList() }).FirstOrDefault();
+            var developer = _context.Developers.Where(d => d.DeveloperId == id).Select(d => new { developer = d, reviews = d.DeveloperReviews.Select(dr => new { reviewID = dr.ReviewId, starRating = dr.StarRating, comment = dr.Comment, potentialBuyer = dr.PotentialBuyer }).ToList() }).FirstOrDefault();
             return Ok(developer);
         }
 
@@ -47,7 +47,7 @@ namespace withAuthentication.Controllers
         [Route("realtors/{id}")]
         public IActionResult getRealtorById(long id)
         {
-            var realtor = _context.Realtors.Select(r => new { realtor = r, languages = r.RealtorLanguages.Select(rl => new { languageId = rl.LanguageId, languageName = rl.Language.LanguageName }).ToList(), reviews = r.RealtorReviews.Select(rr => new { reviewID = rr.ReviewId, starRating = rr.StarRating, comment = rr.Comment, potentialBuyer = rr.PotentialBuyer }).ToList() }).FirstOrDefault(); ;
+            var realtor = _context.Realtors.Where(r => r.RealtorId == id).Select(r => new { realtor = r, languages = r.RealtorLanguages.Select(rl => new { languageId = rl.LanguageId, languageName = rl.Language.LanguageName }).ToList(), reviews = r.RealtorReviews.Select(rr => new { reviewID = rr.ReviewId, starRating = rr.StarRating, comment = rr.Comment, potentialBuyer = rr.PotentialBuyer }).ToList() }).FirstOrDefault(); ;
 
             return Ok(realtor);
         }
