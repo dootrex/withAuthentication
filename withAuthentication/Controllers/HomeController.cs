@@ -27,9 +27,19 @@ namespace withAuthentication.Controllers
                                  Developer = d
                              }).ToList();
              return Ok(listings);*/
-            var listings = _context.Projects.Select(p => new { Project = p, Developer = p.Developer });
+            var listings = _context.Projects.Select(p => new { Project = p, Developer = p.Developer }).OrderBy(p => p.Project.Created);
             return Ok(listings);
         }
+
+
+        [HttpGet]
+        [Route("search/{query}")]
+        public IActionResult getListingsBySearch(string query)
+        {
+            return Ok(_context.Projects.Where(p => p.ProjectName.Contains(query) || p.City.Contains(query) || p.Developer.DeveloperName.Contains(query)).Select(p => new { Project = p, Developer = p.Developer }).OrderBy(p => p.Project.Created));
+        }
+
+
 
         [HttpGet]
         [Route("{id}")]
@@ -75,25 +85,62 @@ namespace withAuthentication.Controllers
             var listings = _context.Projects.Where(p => p.City.Contains(query)).Select(p => new { Project = p, Developer = p.Developer });
             return Ok(listings);
         }
-        [HttpGet]
-        [Route("status/{query}")]
-        public IActionResult getByProjectStatus(string query)
-        {
-            return Ok(_context.Projects.Where(p => p.ProjectStatus == query).Select(p => new { Project = p, Developer = p.Developer }));
-        }
+   
         [HttpGet]
         [Route("sort/{date}")]
         public IActionResult getProjectsByDate(string date)
-
         {
             /*     var dt = DateTime.Parse(date);
-
-
                  List<Project> result = _context.Projects.Where(p => DateTime.Compare(dt, p.Created) < 0).ToList();*/
-
             var listings = _context.Projects.Where(p => DateTime.Compare(DateTime.Parse(date), p.Created) < 0).Select(p => new { Project = p, Developer = p.Developer }).OrderBy(p => p.Project.Created);
             return Ok(listings);
         }
+
+
+        [HttpGet]
+        [Route("sortby/{value}")]
+        public IActionResult sortProjectsByOldest(string value)
+        {
+         
+            if (value == "oldest")
+            {
+            var listings = _context.Projects.Select(p => new { Project = p, Developer = p.Developer }).OrderBy(p => p.Project.Created);
+            return Ok(listings);
+            }
+            else if (value == "newest")
+            {
+                var listings = _context.Projects.Select(p => new { Project = p, Developer = p.Developer }).OrderByDescending(p => p.Project.Created);
+                return Ok(listings);
+            }
+
+             else if (value == "expected")
+            {
+                var listings = _context.Projects.Select(p => new { Project = p, Developer = p.Developer }).OrderBy(p => p.Project.ExpectedCompletion);
+                return Ok(listings);
+            }
+            else if (value == "presale")
+            {
+                var results = _context.Projects.Where(p => p.ProjectStatus.Equals(value));
+                var listings = results.Select(p => new { Project = p, Developer = p.Developer }).OrderBy(p => p.Project.Created);
+                return Ok(listings);
+            }
+            else if (value == "soon")
+            {
+                var results = _context.Projects.Where(p => p.ProjectStatus.Equals("Presale Starting Soon"));
+                var listings = results.Select(p => new { Project = p, Developer = p.Developer }).OrderBy(p => p.Project.Created);
+                return Ok(listings);
+            }
+            else if (value == "available")
+            {
+                var results = _context.Projects.Where(p => p.ProjectStatus.Equals("Now Available"));
+                var listings = results.Select(p => new { Project = p, Developer = p.Developer }).OrderBy(p => p.Project.Created);
+                return Ok(listings);
+            }
+            return Ok("No sort selected");
+        }
+
+       
+
     }
 
 }
