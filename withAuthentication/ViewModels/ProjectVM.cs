@@ -12,8 +12,10 @@ namespace withAuthentication.ViewModels
         public string StreetName { get; set; }
         public string City { get; set; }
         public string PostalCode { get; set; }
+        public string ProjectLink { get; set; }
         public string ProjectStatus { get; set; }
         public string ProjectImage { get; set; }
+        public DateTime ExpectedCompletion { get; set; }
         //only for testing
         /*    public DateTime Created { get; set; }*/
     }

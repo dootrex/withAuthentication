@@ -66,7 +66,7 @@ namespace withAuthentication.Controllers
         public IActionResult getRealtorByName(string query)
         {
 
-            return Ok(_context.Realtors.Where(r => (r.FirstName + r.LastName).Contains(query)).Select(r => new { firstName = r.FirstName, lastName = r.LastName, realtorID = r.RealtorId, profilePic = r.ProfilePic }));
+            return Ok(_context.Realtors.Where(r => (r.FirstName + " " + r.LastName).Contains(query)).Select(r => new { firstName = r.FirstName, lastName = r.LastName, realtorID = r.RealtorId, profilePic = r.ProfilePic }));
         }
         [HttpGet]
         [Route("realtors/lang/{langID}")]

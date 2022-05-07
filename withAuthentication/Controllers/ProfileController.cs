@@ -21,7 +21,7 @@ namespace withAuthentication.Controllers
         private PThreeDbContext _context;
         public ProfileController(PThreeDbContext context) { _context = context; }
 
-        [Authorize]
+
         [HttpGet]
         public IActionResult GetUserData()
         {
@@ -44,6 +44,7 @@ namespace withAuthentication.Controllers
                 var returnObject = new
                 {
                     userDetails = realtor,
+                    userName = realtor.FirstName,
                     role = "Realtor"
                 };
                 return Ok(returnObject);
@@ -54,6 +55,7 @@ namespace withAuthentication.Controllers
                 var returnObject = new
                 {
                     userDetails = developer,
+                    userName = developer.DeveloperName,
                     role = "Developer"
                 };
                 return Ok(returnObject);
@@ -64,6 +66,7 @@ namespace withAuthentication.Controllers
                 var returnObject = new
                 {
                     userDetails = ppowner,
+                    userName = ppowner.FirstName,
                     role = "PPOwner"
                 };
                 return Ok(returnObject);
@@ -71,7 +74,7 @@ namespace withAuthentication.Controllers
             return Ok("failed");
 
         }
-
+        [Authorize(Roles = "Developer")]
         [HttpGet]
         [Route("developer")]
         public IActionResult GetDeveloperDetails()
@@ -125,16 +128,9 @@ namespace withAuthentication.Controllers
             {
                 userName = GetUserName(identity);
             }
-            Realtor realtor = _context.Realtors.Where(r => r.Email == userName).FirstOrDefault();
-            //dont delete the next line even if I am not returning it
-            List<RealtorLanguage> languages = _context.RealtorLanguages.Where(rl => rl.RealtorId == realtor.RealtorId).ToList();
-            var returnObject = new
-            {
-                realtor,
-                languages
-            };
+            var realtor = _context.Realtors.Where(r => r.Email == userName).Select(r => new { realtor = r, languages = r.RealtorLanguages.Select(rl => new { languageId = rl.LanguageId, languageName = rl.Language.LanguageName }).ToList(), reviews = r.RealtorReviews.Select(rr => new { reviewID = rr.ReviewId, starRating = rr.StarRating, comment = rr.Comment, potentialBuyer = rr.PotentialBuyer }).ToList() }).FirstOrDefault(); ;
 
-            return Ok(returnObject);
+            return Ok(realtor);
         }
         [Authorize(Roles = "Realtor")]
         [HttpPut]
