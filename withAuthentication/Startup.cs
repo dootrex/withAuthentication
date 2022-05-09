@@ -32,7 +32,10 @@ namespace withAuthentication
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<PThreeDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+            //uncomment the following to move to sql 
+            // services.AddDbContext<PThreeDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+            //comment the following to stop sqlite
+            services.AddDbContext<PThreeDbContext>(options => options.UseSqlite("Data Source=.\\wwwroot\\sql.db"));
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {

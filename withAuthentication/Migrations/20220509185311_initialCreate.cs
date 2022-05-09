@@ -11,10 +11,10 @@ namespace withAuthentication.Migrations
                 name: "AspNetRoles",
                 columns: table => new
                 {
-                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
-                    NormalizedName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
-                    ConcurrencyStamp = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    Id = table.Column<string>(type: "TEXT", nullable: false),
+                    Name = table.Column<string>(type: "TEXT", maxLength: 256, nullable: true),
+                    NormalizedName = table.Column<string>(type: "TEXT", maxLength: 256, nullable: true),
+                    ConcurrencyStamp = table.Column<string>(type: "TEXT", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -25,21 +25,21 @@ namespace withAuthentication.Migrations
                 name: "AspNetUsers",
                 columns: table => new
                 {
-                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    UserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
-                    NormalizedUserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
-                    Email = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
-                    NormalizedEmail = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
-                    EmailConfirmed = table.Column<bool>(type: "bit", nullable: false),
-                    PasswordHash = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    SecurityStamp = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    ConcurrencyStamp = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    PhoneNumber = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    PhoneNumberConfirmed = table.Column<bool>(type: "bit", nullable: false),
-                    TwoFactorEnabled = table.Column<bool>(type: "bit", nullable: false),
-                    LockoutEnd = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true),
-                    LockoutEnabled = table.Column<bool>(type: "bit", nullable: false),
-                    AccessFailedCount = table.Column<int>(type: "int", nullable: false)
+                    Id = table.Column<string>(type: "TEXT", nullable: false),
+                    UserName = table.Column<string>(type: "TEXT", maxLength: 256, nullable: true),
+                    NormalizedUserName = table.Column<string>(type: "TEXT", maxLength: 256, nullable: true),
+                    Email = table.Column<string>(type: "TEXT", maxLength: 256, nullable: true),
+                    NormalizedEmail = table.Column<string>(type: "TEXT", maxLength: 256, nullable: true),
+                    EmailConfirmed = table.Column<bool>(type: "INTEGER", nullable: false),
+                    PasswordHash = table.Column<string>(type: "TEXT", nullable: true),
+                    SecurityStamp = table.Column<string>(type: "TEXT", nullable: true),
+                    ConcurrencyStamp = table.Column<string>(type: "TEXT", nullable: true),
+                    PhoneNumber = table.Column<string>(type: "TEXT", nullable: true),
+                    PhoneNumberConfirmed = table.Column<bool>(type: "INTEGER", nullable: false),
+                    TwoFactorEnabled = table.Column<bool>(type: "INTEGER", nullable: false),
+                    LockoutEnd = table.Column<DateTimeOffset>(type: "TEXT", nullable: true),
+                    LockoutEnabled = table.Column<bool>(type: "INTEGER", nullable: false),
+                    AccessFailedCount = table.Column<int>(type: "INTEGER", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -50,14 +50,14 @@ namespace withAuthentication.Migrations
                 name: "Developer",
                 columns: table => new
                 {
-                    developerID = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    developerName = table.Column<string>(type: "varchar(50)", unicode: false, maxLength: 50, nullable: true),
-                    phoneNumber = table.Column<string>(type: "char(10)", unicode: false, fixedLength: true, maxLength: 10, nullable: true),
-                    email = table.Column<string>(type: "varchar(50)", unicode: false, maxLength: 50, nullable: false),
-                    website = table.Column<string>(type: "varchar(100)", unicode: false, maxLength: 100, nullable: true),
-                    logo = table.Column<string>(type: "varchar(100)", unicode: false, maxLength: 100, nullable: true),
-                    avgStarRating = table.Column<decimal>(type: "decimal(2,1)", nullable: true),
+                    developerID = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    developerName = table.Column<string>(type: "TEXT", unicode: false, maxLength: 50, nullable: true),
+                    phoneNumber = table.Column<string>(type: "TEXT", unicode: false, fixedLength: true, maxLength: 10, nullable: true),
+                    email = table.Column<string>(type: "TEXT", unicode: false, maxLength: 50, nullable: false),
+                    website = table.Column<string>(type: "TEXT", unicode: false, maxLength: 100, nullable: true),
+                    logo = table.Column<string>(type: "TEXT", unicode: false, maxLength: 100, nullable: true),
+                    avgStarRating = table.Column<decimal>(type: "decimal(2, 1)", nullable: true),
                     subscription_expiration = table.Column<DateTime>(type: "date", nullable: true)
                 },
                 constraints: table =>
@@ -69,10 +69,10 @@ namespace withAuthentication.Migrations
                 name: "Language",
                 columns: table => new
                 {
-                    languageID = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    languageCode = table.Column<string>(type: "varchar(3)", unicode: false, maxLength: 3, nullable: true),
-                    languageName = table.Column<string>(type: "varchar(50)", unicode: false, maxLength: 50, nullable: false)
+                    languageID = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    languageCode = table.Column<string>(type: "TEXT", unicode: false, maxLength: 3, nullable: true),
+                    languageName = table.Column<string>(type: "TEXT", unicode: false, maxLength: 50, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -83,13 +83,13 @@ namespace withAuthentication.Migrations
                 name: "PotentialBuyer",
                 columns: table => new
                 {
-                    potentialBuyerID = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    firstName = table.Column<string>(type: "varchar(15)", unicode: false, maxLength: 15, nullable: true),
-                    lastName = table.Column<string>(type: "varchar(15)", unicode: false, maxLength: 15, nullable: true),
-                    phoneNumber = table.Column<string>(type: "char(10)", unicode: false, fixedLength: true, maxLength: 10, nullable: true),
-                    email = table.Column<string>(type: "varchar(25)", unicode: false, maxLength: 25, nullable: false),
-                    profilePic = table.Column<string>(type: "varchar(100)", unicode: false, maxLength: 100, nullable: true)
+                    potentialBuyerID = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    firstName = table.Column<string>(type: "TEXT", unicode: false, maxLength: 15, nullable: true),
+                    lastName = table.Column<string>(type: "TEXT", unicode: false, maxLength: 15, nullable: true),
+                    phoneNumber = table.Column<string>(type: "TEXT", unicode: false, fixedLength: true, maxLength: 10, nullable: true),
+                    email = table.Column<string>(type: "TEXT", unicode: false, maxLength: 25, nullable: false),
+                    profilePic = table.Column<string>(type: "TEXT", unicode: false, maxLength: 100, nullable: true)
                 },
                 constraints: table =>
                 {
@@ -100,22 +100,22 @@ namespace withAuthentication.Migrations
                 name: "Realtor",
                 columns: table => new
                 {
-                    realtorID = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    firstName = table.Column<string>(type: "varchar(15)", unicode: false, maxLength: 15, nullable: true),
-                    lastName = table.Column<string>(type: "varchar(15)", unicode: false, maxLength: 15, nullable: true),
-                    email = table.Column<string>(type: "varchar(25)", unicode: false, maxLength: 25, nullable: false),
-                    companyName = table.Column<string>(type: "varchar(25)", unicode: false, maxLength: 25, nullable: true),
-                    phoneNumber = table.Column<string>(type: "char(10)", unicode: false, fixedLength: true, maxLength: 10, nullable: true),
-                    profilePic = table.Column<string>(type: "varchar(100)", unicode: false, maxLength: 100, nullable: true),
-                    bioText = table.Column<string>(type: "varchar(255)", unicode: false, maxLength: 255, nullable: true),
-                    avgStarRating = table.Column<decimal>(type: "decimal(2,1)", nullable: true),
-                    website = table.Column<string>(type: "varchar(100)", unicode: false, maxLength: 100, nullable: true),
-                    linkedIn = table.Column<string>(type: "varchar(100)", unicode: false, maxLength: 100, nullable: true),
-                    twitter = table.Column<string>(type: "varchar(100)", unicode: false, maxLength: 100, nullable: true),
-                    youtube = table.Column<string>(type: "varchar(100)", unicode: false, maxLength: 100, nullable: true),
-                    facebook = table.Column<string>(type: "varchar(100)", unicode: false, maxLength: 100, nullable: true),
-                    instagram = table.Column<string>(type: "varchar(100)", unicode: false, maxLength: 100, nullable: true),
+                    realtorID = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    firstName = table.Column<string>(type: "TEXT", unicode: false, maxLength: 15, nullable: true),
+                    lastName = table.Column<string>(type: "TEXT", unicode: false, maxLength: 15, nullable: true),
+                    email = table.Column<string>(type: "TEXT", unicode: false, maxLength: 25, nullable: false),
+                    companyName = table.Column<string>(type: "TEXT", unicode: false, maxLength: 25, nullable: true),
+                    phoneNumber = table.Column<string>(type: "TEXT", unicode: false, fixedLength: true, maxLength: 10, nullable: true),
+                    profilePic = table.Column<string>(type: "TEXT", unicode: false, maxLength: 100, nullable: true),
+                    bioText = table.Column<string>(type: "TEXT", unicode: false, maxLength: 255, nullable: true),
+                    avgStarRating = table.Column<decimal>(type: "decimal(2, 1)", nullable: true),
+                    website = table.Column<string>(type: "TEXT", unicode: false, maxLength: 100, nullable: true),
+                    linkedIn = table.Column<string>(type: "TEXT", unicode: false, maxLength: 100, nullable: true),
+                    twitter = table.Column<string>(type: "TEXT", unicode: false, maxLength: 100, nullable: true),
+                    youtube = table.Column<string>(type: "TEXT", unicode: false, maxLength: 100, nullable: true),
+                    facebook = table.Column<string>(type: "TEXT", unicode: false, maxLength: 100, nullable: true),
+                    instagram = table.Column<string>(type: "TEXT", unicode: false, maxLength: 100, nullable: true),
                     subscription_expiration = table.Column<DateTime>(type: "date", nullable: true)
                 },
                 constraints: table =>
@@ -127,11 +127,11 @@ namespace withAuthentication.Migrations
                 name: "AspNetRoleClaims",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    RoleId = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    ClaimType = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    ClaimValue = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    Id = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    RoleId = table.Column<string>(type: "TEXT", nullable: false),
+                    ClaimType = table.Column<string>(type: "TEXT", nullable: true),
+                    ClaimValue = table.Column<string>(type: "TEXT", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -148,11 +148,11 @@ namespace withAuthentication.Migrations
                 name: "AspNetUserClaims",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    ClaimType = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    ClaimValue = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    Id = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    UserId = table.Column<string>(type: "TEXT", nullable: false),
+                    ClaimType = table.Column<string>(type: "TEXT", nullable: true),
+                    ClaimValue = table.Column<string>(type: "TEXT", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -169,10 +169,10 @@ namespace withAuthentication.Migrations
                 name: "AspNetUserLogins",
                 columns: table => new
                 {
-                    LoginProvider = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    ProviderKey = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    ProviderDisplayName = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false)
+                    LoginProvider = table.Column<string>(type: "TEXT", nullable: false),
+                    ProviderKey = table.Column<string>(type: "TEXT", nullable: false),
+                    ProviderDisplayName = table.Column<string>(type: "TEXT", nullable: true),
+                    UserId = table.Column<string>(type: "TEXT", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -189,8 +189,8 @@ namespace withAuthentication.Migrations
                 name: "AspNetUserRoles",
                 columns: table => new
                 {
-                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    RoleId = table.Column<string>(type: "nvarchar(450)", nullable: false)
+                    UserId = table.Column<string>(type: "TEXT", nullable: false),
+                    RoleId = table.Column<string>(type: "TEXT", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -213,10 +213,10 @@ namespace withAuthentication.Migrations
                 name: "AspNetUserTokens",
                 columns: table => new
                 {
-                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    LoginProvider = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    Value = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    UserId = table.Column<string>(type: "TEXT", nullable: false),
+                    LoginProvider = table.Column<string>(type: "TEXT", nullable: false),
+                    Name = table.Column<string>(type: "TEXT", nullable: false),
+                    Value = table.Column<string>(type: "TEXT", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -233,18 +233,18 @@ namespace withAuthentication.Migrations
                 name: "Project",
                 columns: table => new
                 {
-                    projectID = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    developerID = table.Column<int>(type: "int", nullable: true),
-                    streetNum = table.Column<string>(type: "varchar(10)", unicode: false, maxLength: 10, nullable: true),
-                    streetName = table.Column<string>(type: "varchar(25)", unicode: false, maxLength: 25, nullable: true),
-                    city = table.Column<string>(type: "varchar(15)", unicode: false, maxLength: 15, nullable: true),
-                    postalCode = table.Column<string>(type: "char(6)", unicode: false, fixedLength: true, maxLength: 6, nullable: true),
-                    projectStatus = table.Column<string>(type: "varchar(30)", unicode: false, maxLength: 30, nullable: true),
-                    projectImage = table.Column<string>(type: "varchar(250)", unicode: false, maxLength: 250, nullable: true),
-                    projectName = table.Column<string>(type: "varchar(500)", unicode: false, maxLength: 500, nullable: false),
-                    projectLink = table.Column<string>(type: "varchar(2500)", unicode: false, maxLength: 2500, nullable: true),
-                    projectDescription = table.Column<string>(type: "varchar(5000)", unicode: false, maxLength: 5000, nullable: true),
+                    projectID = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    developerID = table.Column<int>(type: "INTEGER", nullable: true),
+                    streetNum = table.Column<string>(type: "TEXT", unicode: false, maxLength: 10, nullable: true),
+                    streetName = table.Column<string>(type: "TEXT", unicode: false, maxLength: 25, nullable: true),
+                    city = table.Column<string>(type: "TEXT", unicode: false, maxLength: 15, nullable: true),
+                    postalCode = table.Column<string>(type: "TEXT", unicode: false, fixedLength: true, maxLength: 6, nullable: true),
+                    projectStatus = table.Column<string>(type: "TEXT", unicode: false, maxLength: 30, nullable: true),
+                    projectImage = table.Column<string>(type: "TEXT", unicode: false, maxLength: 250, nullable: true),
+                    projectName = table.Column<string>(type: "TEXT", unicode: false, maxLength: 500, nullable: false),
+                    projectLink = table.Column<string>(type: "TEXT", unicode: false, maxLength: 2500, nullable: true),
+                    projectDescription = table.Column<string>(type: "TEXT", unicode: false, maxLength: 5000, nullable: true),
                     created = table.Column<DateTime>(type: "datetime", nullable: false),
                     expectedCompletion = table.Column<DateTime>(type: "date", nullable: true)
                 },
@@ -263,12 +263,12 @@ namespace withAuthentication.Migrations
                 name: "DeveloperReview",
                 columns: table => new
                 {
-                    reviewID = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    developerID = table.Column<int>(type: "int", nullable: true),
-                    potentialBuyerID = table.Column<int>(type: "int", nullable: true),
-                    starRating = table.Column<int>(type: "int", nullable: false),
-                    comment = table.Column<string>(type: "varchar(500)", unicode: false, maxLength: 500, nullable: true)
+                    reviewID = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    developerID = table.Column<int>(type: "INTEGER", nullable: true),
+                    potentialBuyerID = table.Column<int>(type: "INTEGER", nullable: true),
+                    starRating = table.Column<int>(type: "INTEGER", nullable: false),
+                    comment = table.Column<string>(type: "TEXT", unicode: false, maxLength: 500, nullable: true)
                 },
                 constraints: table =>
                 {
@@ -291,10 +291,10 @@ namespace withAuthentication.Migrations
                 name: "RealtorLanguage",
                 columns: table => new
                 {
-                    realtorLanguageID = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    realtorID = table.Column<int>(type: "int", nullable: true),
-                    languageID = table.Column<int>(type: "int", nullable: true)
+                    realtorLanguageID = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    realtorID = table.Column<int>(type: "INTEGER", nullable: true),
+                    languageID = table.Column<int>(type: "INTEGER", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -317,12 +317,12 @@ namespace withAuthentication.Migrations
                 name: "RealtorReview",
                 columns: table => new
                 {
-                    reviewID = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    realtorID = table.Column<int>(type: "int", nullable: true),
-                    potentialBuyerID = table.Column<int>(type: "int", nullable: true),
-                    starRating = table.Column<int>(type: "int", nullable: false),
-                    comment = table.Column<string>(type: "varchar(500)", unicode: false, maxLength: 500, nullable: true)
+                    reviewID = table.Column<int>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    realtorID = table.Column<int>(type: "INTEGER", nullable: true),
+                    potentialBuyerID = table.Column<int>(type: "INTEGER", nullable: true),
+                    starRating = table.Column<int>(type: "INTEGER", nullable: false),
+                    comment = table.Column<string>(type: "TEXT", unicode: false, maxLength: 500, nullable: true)
                 },
                 constraints: table =>
                 {
@@ -350,8 +350,7 @@ namespace withAuthentication.Migrations
                 name: "RoleNameIndex",
                 table: "AspNetRoles",
                 column: "NormalizedName",
-                unique: true,
-                filter: "[NormalizedName] IS NOT NULL");
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetUserClaims_UserId",
@@ -377,8 +376,7 @@ namespace withAuthentication.Migrations
                 name: "UserNameIndex",
                 table: "AspNetUsers",
                 column: "NormalizedUserName",
-                unique: true,
-                filter: "[NormalizedUserName] IS NOT NULL");
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_DeveloperReview_developerID",

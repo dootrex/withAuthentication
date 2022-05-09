@@ -65,29 +65,29 @@ namespace withAuthentication.Controllers
                  _context.SaveChanges();
 
                  string[] langs = new string[]{
-                                           "Mandarin Chinese",
-                                           "Spanish",
-                                           "English",
-                                           "Hindi/Urdu",
-                                           "Arabic",
-                                           "Bengali",
-                                           "Portuguese",
-                                           "Russian",
-                                           "Japanese",
-                                           "German",
-                                           "Javanese",
-                                           "Punjabi",
-                                           "Wu",
-                                           "French",
-                                           "Telugu",
-                                           "Vietnamese",
-                                           "Marathi",
-                                           "Korean",
-                                           "Tamil",
-                                           "Italian",
-                                           "Turkish",
-                                           "Cantonese/Yue"
-                                          };
+                                            "Mandarin Chinese",
+                                            "Spanish",
+                                            "English",
+                                            "Hindi/Urdu",
+                                            "Arabic",
+                                            "Bengali",
+                                            "Portuguese",
+                                            "Russian",
+                                            "Japanese",
+                                            "German",
+                                            "Javanese",
+                                            "Punjabi",
+                                            "Wu",
+                                            "French",
+                                            "Telugu",
+                                            "Vietnamese",
+                                            "Marathi",
+                                            "Korean",
+                                            "Tamil",
+                                            "Italian",
+                                            "Turkish",
+                                            "Cantonese/Yue"
+                                           };
                  foreach (var lang in langs)
                  {
                      Language language = new Language()

@@ -2,7 +2,6 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
-using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using withAuthentication.Models;
@@ -10,7 +9,7 @@ using withAuthentication.Models;
 namespace withAuthentication.Migrations
 {
     [DbContext(typeof(PThreeDbContext))]
-    [Migration("20220506195308_initialCreate")]
+    [Migration("20220509185311_initialCreate")]
     partial class initialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -18,33 +17,30 @@ namespace withAuthentication.Migrations
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("Relational:Collation", "SQL_Latin1_General_CP1_CI_AS")
-                .HasAnnotation("Relational:MaxIdentifierLength", 128)
-                .HasAnnotation("ProductVersion", "5.0.16")
-                .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                .HasAnnotation("ProductVersion", "5.0.16");
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
                 {
                     b.Property<string>("Id")
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("Name")
                         .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("NormalizedName")
                         .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
+                        .HasColumnType("TEXT");
 
                     b.HasKey("Id");
 
                     b.HasIndex("NormalizedName")
                         .IsUnique()
-                        .HasDatabaseName("RoleNameIndex")
-                        .HasFilter("[NormalizedName] IS NOT NULL");
+                        .HasDatabaseName("RoleNameIndex");
 
                     b.ToTable("AspNetRoles");
                 });
@@ -53,18 +49,17 @@ namespace withAuthentication.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("INTEGER");
 
                     b.Property<string>("ClaimType")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("ClaimValue")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("RoleId")
                         .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("TEXT");
 
                     b.HasKey("Id");
 
@@ -76,54 +71,54 @@ namespace withAuthentication.Migrations
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUser", b =>
                 {
                     b.Property<string>("Id")
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("TEXT");
 
                     b.Property<int>("AccessFailedCount")
-                        .HasColumnType("int");
+                        .HasColumnType("INTEGER");
 
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("Email")
                         .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
+                        .HasColumnType("TEXT");
 
                     b.Property<bool>("EmailConfirmed")
-                        .HasColumnType("bit");
+                        .HasColumnType("INTEGER");
 
                     b.Property<bool>("LockoutEnabled")
-                        .HasColumnType("bit");
+                        .HasColumnType("INTEGER");
 
                     b.Property<DateTimeOffset?>("LockoutEnd")
-                        .HasColumnType("datetimeoffset");
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("NormalizedEmail")
                         .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("NormalizedUserName")
                         .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("PasswordHash")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("PhoneNumber")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("TEXT");
 
                     b.Property<bool>("PhoneNumberConfirmed")
-                        .HasColumnType("bit");
+                        .HasColumnType("INTEGER");
 
                     b.Property<string>("SecurityStamp")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("TEXT");
 
                     b.Property<bool>("TwoFactorEnabled")
-                        .HasColumnType("bit");
+                        .HasColumnType("INTEGER");
 
                     b.Property<string>("UserName")
                         .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
+                        .HasColumnType("TEXT");
 
                     b.HasKey("Id");
 
@@ -132,8 +127,7 @@ namespace withAuthentication.Migrations
 
                     b.HasIndex("NormalizedUserName")
                         .IsUnique()
-                        .HasDatabaseName("UserNameIndex")
-                        .HasFilter("[NormalizedUserName] IS NOT NULL");
+                        .HasDatabaseName("UserNameIndex");
 
                     b.ToTable("AspNetUsers");
                 });
@@ -142,18 +136,17 @@ namespace withAuthentication.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("INTEGER");
 
                     b.Property<string>("ClaimType")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("ClaimValue")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("UserId")
                         .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("TEXT");
 
                     b.HasKey("Id");
 
@@ -165,17 +158,17 @@ namespace withAuthentication.Migrations
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
                 {
                     b.Property<string>("LoginProvider")
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("ProviderKey")
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("ProviderDisplayName")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("UserId")
                         .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("TEXT");
 
                     b.HasKey("LoginProvider", "ProviderKey");
 
@@ -187,10 +180,10 @@ namespace withAuthentication.Migrations
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<string>", b =>
                 {
                     b.Property<string>("UserId")
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("RoleId")
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("TEXT");
 
                     b.HasKey("UserId", "RoleId");
 
@@ -202,16 +195,16 @@ namespace withAuthentication.Migrations
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
                 {
                     b.Property<string>("UserId")
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("LoginProvider")
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("Name")
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("Value")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("TEXT");
 
                     b.HasKey("UserId", "LoginProvider", "Name");
 
@@ -222,37 +215,36 @@ namespace withAuthentication.Migrations
                 {
                     b.Property<int>("DeveloperId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasColumnName("developerID")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("INTEGER")
+                        .HasColumnName("developerID");
 
                     b.Property<decimal?>("AvgStarRating")
-                        .HasColumnType("decimal(2,1)")
+                        .HasColumnType("decimal(2, 1)")
                         .HasColumnName("avgStarRating");
 
                     b.Property<string>("DeveloperName")
                         .HasMaxLength(50)
                         .IsUnicode(false)
-                        .HasColumnType("varchar(50)")
+                        .HasColumnType("TEXT")
                         .HasColumnName("developerName");
 
                     b.Property<string>("Email")
                         .IsRequired()
                         .HasMaxLength(50)
                         .IsUnicode(false)
-                        .HasColumnType("varchar(50)")
+                        .HasColumnType("TEXT")
                         .HasColumnName("email");
 
                     b.Property<string>("Logo")
                         .HasMaxLength(100)
                         .IsUnicode(false)
-                        .HasColumnType("varchar(100)")
+                        .HasColumnType("TEXT")
                         .HasColumnName("logo");
 
                     b.Property<string>("PhoneNumber")
                         .HasMaxLength(10)
                         .IsUnicode(false)
-                        .HasColumnType("char(10)")
+                        .HasColumnType("TEXT")
                         .HasColumnName("phoneNumber")
                         .IsFixedLength(true);
 
@@ -263,7 +255,7 @@ namespace withAuthentication.Migrations
                     b.Property<string>("Website")
                         .HasMaxLength(100)
                         .IsUnicode(false)
-                        .HasColumnType("varchar(100)")
+                        .HasColumnType("TEXT")
                         .HasColumnName("website");
 
                     b.HasKey("DeveloperId");
@@ -275,26 +267,25 @@ namespace withAuthentication.Migrations
                 {
                     b.Property<int>("ReviewId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasColumnName("reviewID")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("INTEGER")
+                        .HasColumnName("reviewID");
 
                     b.Property<string>("Comment")
                         .HasMaxLength(500)
                         .IsUnicode(false)
-                        .HasColumnType("varchar(500)")
+                        .HasColumnType("TEXT")
                         .HasColumnName("comment");
 
                     b.Property<int?>("DeveloperId")
-                        .HasColumnType("int")
+                        .HasColumnType("INTEGER")
                         .HasColumnName("developerID");
 
                     b.Property<int?>("PotentialBuyerId")
-                        .HasColumnType("int")
+                        .HasColumnType("INTEGER")
                         .HasColumnName("potentialBuyerID");
 
                     b.Property<int>("StarRating")
-                        .HasColumnType("int")
+                        .HasColumnType("INTEGER")
                         .HasColumnName("starRating");
 
                     b.HasKey("ReviewId")
@@ -311,21 +302,20 @@ namespace withAuthentication.Migrations
                 {
                     b.Property<int>("LanguageId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasColumnName("languageID")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("INTEGER")
+                        .HasColumnName("languageID");
 
                     b.Property<string>("LanguageCode")
                         .HasMaxLength(3)
                         .IsUnicode(false)
-                        .HasColumnType("varchar(3)")
+                        .HasColumnType("TEXT")
                         .HasColumnName("languageCode");
 
                     b.Property<string>("LanguageName")
                         .IsRequired()
                         .HasMaxLength(50)
                         .IsUnicode(false)
-                        .HasColumnType("varchar(50)")
+                        .HasColumnType("TEXT")
                         .HasColumnName("languageName");
 
                     b.HasKey("LanguageId");
@@ -337,40 +327,39 @@ namespace withAuthentication.Migrations
                 {
                     b.Property<int>("PotentialBuyerId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasColumnName("potentialBuyerID")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("INTEGER")
+                        .HasColumnName("potentialBuyerID");
 
                     b.Property<string>("Email")
                         .IsRequired()
                         .HasMaxLength(25)
                         .IsUnicode(false)
-                        .HasColumnType("varchar(25)")
+                        .HasColumnType("TEXT")
                         .HasColumnName("email");
 
                     b.Property<string>("FirstName")
                         .HasMaxLength(15)
                         .IsUnicode(false)
-                        .HasColumnType("varchar(15)")
+                        .HasColumnType("TEXT")
                         .HasColumnName("firstName");
 
                     b.Property<string>("LastName")
                         .HasMaxLength(15)
                         .IsUnicode(false)
-                        .HasColumnType("varchar(15)")
+                        .HasColumnType("TEXT")
                         .HasColumnName("lastName");
 
                     b.Property<string>("PhoneNumber")
                         .HasMaxLength(10)
                         .IsUnicode(false)
-                        .HasColumnType("char(10)")
+                        .HasColumnType("TEXT")
                         .HasColumnName("phoneNumber")
                         .IsFixedLength(true);
 
                     b.Property<string>("ProfilePic")
                         .HasMaxLength(100)
                         .IsUnicode(false)
-                        .HasColumnType("varchar(100)")
+                        .HasColumnType("TEXT")
                         .HasColumnName("profilePic");
 
                     b.HasKey("PotentialBuyerId");
@@ -382,14 +371,13 @@ namespace withAuthentication.Migrations
                 {
                     b.Property<int>("ProjectId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasColumnName("projectID")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("INTEGER")
+                        .HasColumnName("projectID");
 
                     b.Property<string>("City")
                         .HasMaxLength(15)
                         .IsUnicode(false)
-                        .HasColumnType("varchar(15)")
+                        .HasColumnType("TEXT")
                         .HasColumnName("city");
 
                     b.Property<DateTime>("Created")
@@ -397,7 +385,7 @@ namespace withAuthentication.Migrations
                         .HasColumnName("created");
 
                     b.Property<int?>("DeveloperId")
-                        .HasColumnType("int")
+                        .HasColumnType("INTEGER")
                         .HasColumnName("developerID");
 
                     b.Property<DateTime?>("ExpectedCompletion")
@@ -407,51 +395,51 @@ namespace withAuthentication.Migrations
                     b.Property<string>("PostalCode")
                         .HasMaxLength(6)
                         .IsUnicode(false)
-                        .HasColumnType("char(6)")
+                        .HasColumnType("TEXT")
                         .HasColumnName("postalCode")
                         .IsFixedLength(true);
 
                     b.Property<string>("ProjectDescription")
                         .HasMaxLength(5000)
                         .IsUnicode(false)
-                        .HasColumnType("varchar(5000)")
+                        .HasColumnType("TEXT")
                         .HasColumnName("projectDescription");
 
                     b.Property<string>("ProjectImage")
                         .HasMaxLength(250)
                         .IsUnicode(false)
-                        .HasColumnType("varchar(250)")
+                        .HasColumnType("TEXT")
                         .HasColumnName("projectImage");
 
                     b.Property<string>("ProjectLink")
                         .HasMaxLength(2500)
                         .IsUnicode(false)
-                        .HasColumnType("varchar(2500)")
+                        .HasColumnType("TEXT")
                         .HasColumnName("projectLink");
 
                     b.Property<string>("ProjectName")
                         .IsRequired()
                         .HasMaxLength(500)
                         .IsUnicode(false)
-                        .HasColumnType("varchar(500)")
+                        .HasColumnType("TEXT")
                         .HasColumnName("projectName");
 
                     b.Property<string>("ProjectStatus")
                         .HasMaxLength(30)
                         .IsUnicode(false)
-                        .HasColumnType("varchar(30)")
+                        .HasColumnType("TEXT")
                         .HasColumnName("projectStatus");
 
                     b.Property<string>("StreetName")
                         .HasMaxLength(25)
                         .IsUnicode(false)
-                        .HasColumnType("varchar(25)")
+                        .HasColumnType("TEXT")
                         .HasColumnName("streetName");
 
                     b.Property<string>("StreetNum")
                         .HasMaxLength(10)
                         .IsUnicode(false)
-                        .HasColumnType("varchar(10)")
+                        .HasColumnType("TEXT")
                         .HasColumnName("streetNum");
 
                     b.HasKey("ProjectId");
@@ -465,74 +453,73 @@ namespace withAuthentication.Migrations
                 {
                     b.Property<int>("RealtorId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasColumnName("realtorID")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("INTEGER")
+                        .HasColumnName("realtorID");
 
                     b.Property<decimal?>("AvgStarRating")
-                        .HasColumnType("decimal(2,1)")
+                        .HasColumnType("decimal(2, 1)")
                         .HasColumnName("avgStarRating");
 
                     b.Property<string>("BioText")
                         .HasMaxLength(255)
                         .IsUnicode(false)
-                        .HasColumnType("varchar(255)")
+                        .HasColumnType("TEXT")
                         .HasColumnName("bioText");
 
                     b.Property<string>("CompanyName")
                         .HasMaxLength(25)
                         .IsUnicode(false)
-                        .HasColumnType("varchar(25)")
+                        .HasColumnType("TEXT")
                         .HasColumnName("companyName");
 
                     b.Property<string>("Email")
                         .IsRequired()
                         .HasMaxLength(25)
                         .IsUnicode(false)
-                        .HasColumnType("varchar(25)")
+                        .HasColumnType("TEXT")
                         .HasColumnName("email");
 
                     b.Property<string>("Facebook")
                         .HasMaxLength(100)
                         .IsUnicode(false)
-                        .HasColumnType("varchar(100)")
+                        .HasColumnType("TEXT")
                         .HasColumnName("facebook");
 
                     b.Property<string>("FirstName")
                         .HasMaxLength(15)
                         .IsUnicode(false)
-                        .HasColumnType("varchar(15)")
+                        .HasColumnType("TEXT")
                         .HasColumnName("firstName");
 
                     b.Property<string>("Instagram")
                         .HasMaxLength(100)
                         .IsUnicode(false)
-                        .HasColumnType("varchar(100)")
+                        .HasColumnType("TEXT")
                         .HasColumnName("instagram");
 
                     b.Property<string>("LastName")
                         .HasMaxLength(15)
                         .IsUnicode(false)
-                        .HasColumnType("varchar(15)")
+                        .HasColumnType("TEXT")
                         .HasColumnName("lastName");
 
                     b.Property<string>("LinkedIn")
                         .HasMaxLength(100)
                         .IsUnicode(false)
-                        .HasColumnType("varchar(100)")
+                        .HasColumnType("TEXT")
                         .HasColumnName("linkedIn");
 
                     b.Property<string>("PhoneNumber")
                         .HasMaxLength(10)
                         .IsUnicode(false)
-                        .HasColumnType("char(10)")
+                        .HasColumnType("TEXT")
                         .HasColumnName("phoneNumber")
                         .IsFixedLength(true);
 
                     b.Property<string>("ProfilePic")
                         .HasMaxLength(100)
                         .IsUnicode(false)
-                        .HasColumnType("varchar(100)")
+                        .HasColumnType("TEXT")
                         .HasColumnName("profilePic");
 
                     b.Property<DateTime?>("SubscriptionExpiration")
@@ -542,19 +529,19 @@ namespace withAuthentication.Migrations
                     b.Property<string>("Twitter")
                         .HasMaxLength(100)
                         .IsUnicode(false)
-                        .HasColumnType("varchar(100)")
+                        .HasColumnType("TEXT")
                         .HasColumnName("twitter");
 
                     b.Property<string>("Website")
                         .HasMaxLength(100)
                         .IsUnicode(false)
-                        .HasColumnType("varchar(100)")
+                        .HasColumnType("TEXT")
                         .HasColumnName("website");
 
                     b.Property<string>("Youtube")
                         .HasMaxLength(100)
                         .IsUnicode(false)
-                        .HasColumnType("varchar(100)")
+                        .HasColumnType("TEXT")
                         .HasColumnName("youtube");
 
                     b.HasKey("RealtorId");
@@ -566,16 +553,15 @@ namespace withAuthentication.Migrations
                 {
                     b.Property<int>("RealtorLanguageId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasColumnName("realtorLanguageID")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("INTEGER")
+                        .HasColumnName("realtorLanguageID");
 
                     b.Property<int?>("LanguageId")
-                        .HasColumnType("int")
+                        .HasColumnType("INTEGER")
                         .HasColumnName("languageID");
 
                     b.Property<int?>("RealtorId")
-                        .HasColumnType("int")
+                        .HasColumnType("INTEGER")
                         .HasColumnName("realtorID");
 
                     b.HasKey("RealtorLanguageId");
@@ -591,26 +577,25 @@ namespace withAuthentication.Migrations
                 {
                     b.Property<int>("ReviewId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasColumnName("reviewID")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnType("INTEGER")
+                        .HasColumnName("reviewID");
 
                     b.Property<string>("Comment")
                         .HasMaxLength(500)
                         .IsUnicode(false)
-                        .HasColumnType("varchar(500)")
+                        .HasColumnType("TEXT")
                         .HasColumnName("comment");
 
                     b.Property<int?>("PotentialBuyerId")
-                        .HasColumnType("int")
+                        .HasColumnType("INTEGER")
                         .HasColumnName("potentialBuyerID");
 
                     b.Property<int?>("RealtorId")
-                        .HasColumnType("int")
+                        .HasColumnType("INTEGER")
                         .HasColumnName("realtorID");
 
                     b.Property<int>("StarRating")
-                        .HasColumnType("int")
+                        .HasColumnType("INTEGER")
                         .HasColumnName("starRating");
 
                     b.HasKey("ReviewId")

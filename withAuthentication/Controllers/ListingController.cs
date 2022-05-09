@@ -12,7 +12,7 @@ using withAuthentication.ViewModels;
 
 namespace withAuthentication.Controllers
 {
-    [Authorize(Roles = "Developer")]
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class ListingController : ControllerBase
@@ -49,7 +49,7 @@ namespace withAuthentication.Controllers
             var project = _context.Projects.Where(p => p.ProjectId == id).Select(p => new { Project = p, Developer = p.Developer });
             return Ok(project);
         }
-
+        [Authorize(Roles = "Developer")]
         [HttpPost]
         public IActionResult CreateListing([FromBody] Project project)
         {
@@ -60,10 +60,7 @@ namespace withAuthentication.Controllers
                 userName = GetUserName(identity);
             }
             var developer = _context.Developers.Where(d => d.Email == userName).FirstOrDefault();
-            if (project.DeveloperId != developer.DeveloperId)
-            {
-                return Unauthorized();
-            }
+
             if (developer != null)
             {
                 Project pr = new Project()
@@ -84,9 +81,9 @@ namespace withAuthentication.Controllers
                 _context.SaveChanges();
                 return Ok(pr);
             }
-            return null;
+            return Unauthorized();
         }
-
+        [Authorize(Roles = "Developer")]
         [HttpPut]
         public IActionResult UpdateListing([FromBody] ProjectVM pVM)
         {
@@ -99,11 +96,8 @@ namespace withAuthentication.Controllers
             }
             var developer = _context.Developers.Where(d => d.Email == userName).FirstOrDefault();
             var project = _context.Projects.Where(p => p.ProjectId == pVM.ProjectId).FirstOrDefault();
-            if (project.DeveloperId != developer.DeveloperId)
-            {
-                return Unauthorized();
-            }
-            if (project != null)
+
+            if (project != null && developer != null)
             {
                 project.StreetName = pVM.StreetName;
                 project.StreetNum = pVM.StreetNum;
@@ -133,11 +127,8 @@ namespace withAuthentication.Controllers
             }
             var developer = _context.Developers.Where(d => d.Email == userName).FirstOrDefault();
             var project = _context.Projects.Where(p => p.ProjectId == id).FirstOrDefault();
-            if (project.DeveloperId != developer.DeveloperId)
-            {
-                return Unauthorized();
-            }
-            if (project != null)
+
+            if (project != null && developer != null)
             {
                 _context.Projects.Remove(project);
                 _context.SaveChanges();
