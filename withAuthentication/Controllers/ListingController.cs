@@ -75,7 +75,8 @@ namespace withAuthentication.Controllers
                     ProjectImage = project.ProjectImage,
                     ProjectName = project.ProjectName,//not null
                     Created = DateTime.Now,// not null
-                    ExpectedCompletion = project.ExpectedCompletion
+                    ExpectedCompletion = project.ExpectedCompletion,
+                    ProjectDescription = project.ProjectDescription
                 };
                 _context.Projects.Add(pr);
                 _context.SaveChanges();
@@ -107,6 +108,7 @@ namespace withAuthentication.Controllers
                 project.ProjectImage = pVM.ProjectImage;
                 project.ProjectLink = pVM.ProjectLink;
                 project.ExpectedCompletion = pVM.ExpectedCompletion;
+                project.ProjectDescription = pVM.ProjectDescription;
                 //  project.Created = pVM.Created; //only their for testing time sort
                 _context.SaveChanges();
                 return Ok(project);
