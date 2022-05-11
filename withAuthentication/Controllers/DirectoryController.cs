@@ -57,7 +57,7 @@ namespace withAuthentication.Controllers
         [Route("developers/name/{query}")]
         public IActionResult getDeveloperByName(string query)
         {
-            return Ok(_context.Developers.Where(d => d.DeveloperName.Contains(query)).Select(d => new { developerID = d.DeveloperId, developerName = d.DeveloperName, logo = d.Logo }));
+            return Ok(_context.Developers.Where(d => d.DeveloperName.ToUpper().Contains(query.ToUpper())).Select(d => new { developerID = d.DeveloperId, developerName = d.DeveloperName, logo = d.Logo }));
         }
 
 
@@ -66,7 +66,7 @@ namespace withAuthentication.Controllers
         public IActionResult getRealtorByName(string query)
         {
 
-            return Ok(_context.Realtors.Where(r => (r.FirstName + r.LastName).Contains(query)).Select(r => new { firstName = r.FirstName, lastName = r.LastName, realtorID = r.RealtorId, companyName = r.CompanyName, profilePic = r.ProfilePic }));
+            return Ok(_context.Realtors.Where(r => (r.FirstName + r.LastName).ToUpper().Contains(query.ToUpper())).Select(r => new { firstName = r.FirstName, lastName = r.LastName, realtorID = r.RealtorId, companyName = r.CompanyName, profilePic = r.ProfilePic }));
         }
         [HttpGet]
         [Route("realtors/lang/{langID}")]
