@@ -36,7 +36,7 @@ namespace withAuthentication.Controllers
         [Route("search/{query}")]
         public IActionResult getListingsBySearch(string query)
         {
-            return Ok(_context.Projects.Where(p => p.ProjectName.Contains(query) || p.City.Contains(query) || p.Developer.DeveloperName.Contains(query)).Select(p => new { Project = p, Developer = p.Developer }).OrderBy(p => p.Project.Created));
+            return Ok(_context.Projects.Where(p => p.ProjectName.ToUpper().Contains(query.ToUpper()) || p.City.ToUpper().Contains(query.ToUpper()) || p.Developer.DeveloperName.ToUpper().Contains(query.ToUpper())).Select(p => new { Project = p, Developer = p.Developer }).OrderBy(p => p.Project.Created));
         }
 
 
@@ -85,7 +85,7 @@ namespace withAuthentication.Controllers
             var listings = _context.Projects.Where(p => p.City.Contains(query)).Select(p => new { Project = p, Developer = p.Developer });
             return Ok(listings);
         }
-   
+
         [HttpGet]
         [Route("sort/{date}")]
         public IActionResult getProjectsByDate(string date)
@@ -101,11 +101,11 @@ namespace withAuthentication.Controllers
         [Route("sortby/{value}")]
         public IActionResult sortProjectsByOldest(string value)
         {
-         
+
             if (value == "oldest")
             {
-            var listings = _context.Projects.Select(p => new { Project = p, Developer = p.Developer }).OrderBy(p => p.Project.Created);
-            return Ok(listings);
+                var listings = _context.Projects.Select(p => new { Project = p, Developer = p.Developer }).OrderBy(p => p.Project.Created);
+                return Ok(listings);
             }
             else if (value == "newest")
             {
@@ -113,7 +113,7 @@ namespace withAuthentication.Controllers
                 return Ok(listings);
             }
 
-             else if (value == "expected")
+            else if (value == "expected")
             {
                 var listings = _context.Projects.Select(p => new { Project = p, Developer = p.Developer }).OrderBy(p => p.Project.ExpectedCompletion);
                 return Ok(listings);
@@ -139,7 +139,7 @@ namespace withAuthentication.Controllers
             return Ok("No sort selected");
         }
 
-       
+
 
     }
 
