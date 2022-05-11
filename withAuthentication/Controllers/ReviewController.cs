@@ -127,10 +127,10 @@ namespace withAuthentication.Controllers
             }
             var ppOwner = _context.PotentialBuyers.Where(pp => pp.Email == userName).FirstOrDefault();
             var developerReview = _context.DeveloperReviews.Where(d => d.ReviewId == id).FirstOrDefault();
-            if (ppOwner.PotentialBuyerId != developerReview.PotentialBuyerId)
-            {
-                return Unauthorized();
-            }
+            /*  if (ppOwner.PotentialBuyerId != developerReview.PotentialBuyerId)
+              {
+                  return Unauthorized();
+              }*/
             if (developerReview == null)
             {
                 return NotFound();
@@ -142,7 +142,15 @@ namespace withAuthentication.Controllers
 
                 // Update Average Star Rating
                 Developer developer = _context.Developers.Where(r => r.DeveloperId == developerReview.DeveloperId).FirstOrDefault();
-                developer.AvgStarRating = (decimal?)_context.DeveloperReviews.Where(r => r.DeveloperId == developerReview.DeveloperId).Average(r => r.StarRating);
+                var ratings = _context.DeveloperReviews.Where(r => r.DeveloperId == developerReview.DeveloperId).ToList();
+                if (ratings.Count > 0)
+                {
+                    developer.AvgStarRating = (decimal?)ratings.Average(r => r.StarRating);
+                }
+                else
+                {
+                    developer.AvgStarRating = null;
+                }
                 _context.SaveChanges();
 
                 return new ObjectResult(developerReview);
@@ -166,10 +174,6 @@ namespace withAuthentication.Controllers
             }
             var ppOwner = _context.PotentialBuyers.Where(pp => pp.Email == userName).FirstOrDefault();
             var realtorReview = _context.RealtorReviews.Where(d => d.ReviewId == id).FirstOrDefault();
-            if (ppOwner.PotentialBuyerId != realtorReview.PotentialBuyerId)
-            {
-                return Unauthorized();
-            }
 
             if (realtorReview == null)
             {
@@ -182,7 +186,15 @@ namespace withAuthentication.Controllers
 
                 // Update Average Star Rating
                 Realtor realtor = _context.Realtors.Where(r => r.RealtorId == realtorReview.RealtorId).FirstOrDefault();
-                realtor.AvgStarRating = (decimal?)_context.RealtorReviews.Where(r => r.RealtorId == realtorReview.RealtorId).Average(r => r.StarRating);
+                var ratings = _context.RealtorReviews.Where(r => r.RealtorId == realtorReview.RealtorId).ToList();
+                if (ratings.Count > 0)
+                {
+                    realtor.AvgStarRating = (decimal?)ratings.Average(r => r.StarRating);
+                }
+                else
+                {
+                    realtor.AvgStarRating = null;
+                }
                 _context.SaveChanges();
 
                 return new ObjectResult(realtorReview);

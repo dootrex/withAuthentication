@@ -16,7 +16,7 @@ namespace withAuthentication.ViewModels
         public string ProjectStatus { get; set; }
         public string ProjectImage { get; set; }
         public string ProjectDescription { get; set; }
-        public DateTime ExpectedCompletion { get; set; }
+        public string ExpectedCompletion { get; set; }
         //only for testing
         /*    public DateTime Created { get; set; }*/
     }

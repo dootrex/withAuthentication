@@ -107,7 +107,7 @@ namespace withAuthentication.Controllers
                 project.ProjectStatus = pVM.ProjectStatus;
                 project.ProjectImage = pVM.ProjectImage;
                 project.ProjectLink = pVM.ProjectLink;
-                project.ExpectedCompletion = pVM.ExpectedCompletion;
+                // project.ExpectedCompletion = pVM.ExpectedCompletion;
                 project.ProjectDescription = pVM.ProjectDescription;
                 //  project.Created = pVM.Created; //only their for testing time sort
                 _context.SaveChanges();
