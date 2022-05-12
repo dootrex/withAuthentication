@@ -18,15 +18,6 @@ namespace withAuthentication.Controllers
         [HttpGet]
         public IActionResult getAllListings()
         {
-            /* var listings = (from d in _context.Developers
-                             from p in d.Projects
-                             where d.DeveloperId == p.DeveloperId
-                             select new
-                             {
-                                 Project = p,
-                                 Developer = d
-                             }).ToList();
-             return Ok(listings);*/
             var listings = _context.Projects.Select(p => new { Project = p, Developer = p.Developer }).OrderBy(p => p.Project.Created);
             return Ok(listings);
         }
@@ -45,16 +36,6 @@ namespace withAuthentication.Controllers
         [Route("{id}")]
         public IActionResult getByID(long id)
         {
-            /*    var project = from d in _context.Developers
-                              from p in d.Projects
-                              where p.ProjectId == id
-                              where d.DeveloperId == p.DeveloperId
-                              select new
-                              {
-                                  Project = p,
-                                  Developer = d
-                              };
-                return Ok(project);*/
             var listing = _context.Projects.Where(p => p.ProjectId == id).Select(p => new { Project = p, Developer = p.Developer });
             return Ok(listing);
         }
@@ -63,18 +44,7 @@ namespace withAuthentication.Controllers
         [Route("developerName/{query}")]
         public IActionResult getByDeveloperName(string query)
         {
-
-
-            /* var listings = (from d in _context.Developers
-                             from p in d.Projects
-                             where d.DeveloperId == p.DeveloperId && d.DeveloperName.Contains(query)
-                             select new
-                             {
-                                 Project = p,
-                                 Developer = d
-                             }).ToList();
-             return Ok(listings);*/
-            var listings = _context.Projects.Where(p => p.Developer.DeveloperName.Contains(query)).Select(p => new { Project = p, Developer = p.Developer });
+            var listings = _context.Projects.Where(p => p.Developer.DeveloperName.ToUpper().Contains(query.ToUpper())).Select(p => new { Project = p, Developer = p.Developer });
             return Ok(listings);
 
         }
@@ -82,7 +52,7 @@ namespace withAuthentication.Controllers
         [Route("city/{query}")]
         public IActionResult getByCity(string query)
         {
-            var listings = _context.Projects.Where(p => p.City.Contains(query)).Select(p => new { Project = p, Developer = p.Developer });
+            var listings = _context.Projects.Where(p => p.City.ToUpper().Contains(query.ToUpper())).Select(p => new { Project = p, Developer = p.Developer });
             return Ok(listings);
         }
 
